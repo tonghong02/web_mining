@@ -16,8 +16,11 @@ export class TestService {
   // }
 
   getContact(){
-    return this._apiRequest.get('contact');
+    return this._apiRequest.get(`contact`);
   }
 
+  createContact(body: any){
+    return this._apiRequest.post(`contact`, body);
+  }
 
 }

@@ -5,6 +5,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { AppComponent } from './app.component';
 import { AppCustomPreload } from './app.routing.loader';
 import { ContactComponent } from './pages/contact/contact.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const appRouter: Routes = [
     // {
@@ -29,7 +30,11 @@ const appRouter: Routes = [
         path: '',
         redirectTo: '/home',
         pathMatch: 'full'
-    }
+    },
+    {
+        path: 'home',
+        component: HomeComponent,
+    },
 ];
 
 @NgModule({

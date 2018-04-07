@@ -1,3 +1,74 @@
-<p>
-  contact works!
-</p>
+<div class="form-step">
+  <p>CONTACT US</p>
+  <div class="wrapper col-md-offset-2 col-md-6">
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <!-- <div class="form-group">
+        <label>Select form of inquiry</label>
+        <select #inquiryf class="form-control" formControlName="category" (focus)="setMessageErr(1)">
+          <option *ngFor="let category of categorys" [ngValue]="category._id">
+            {{ category.name }}
+          </option>
+        </select>
+        <div *ngIf="mesCategory" class="alert alert-danger">
+          {{ mesCategory }}
+        </div>
+      </div> -->
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="youremail@gmail.com" class="form-control" formControlName="email">
+      </div>
+      <!-- <div *ngIf="mesName" class="alert alert-danger">
+        {{ mesName }}
+      </div> -->
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" placeholder="Your name" class="form-control" formControlName="name">
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <input type="text" [value]="" placeholder="Your subject" class="form-control" formControlName="subject">
+      </div>
+
+      <div class="form-group">
+        <label>Your message</label>
+        <textarea class="form-control" formControlName="message" placeholder="Your message" rows="5"></textarea>
+      </div>
+
+      <div class="item-input-inline btn-submit">
+        <!-- [disabled]="!contactForm.valid" -->
+        <input type="submit" value="SUBMIT">
+      </div>
+    </form>
+  </div>
+</div>
+<!-- <pre>{{ contactForm.value | json }} </pre> -->
+<div>
+  <div class="container">
+      <div class="text-center">
+          <h1>Angular 2 - Pagination Example with logic like Google</h1>
+
+          <!-- items being paged -->
+          <div *ngFor="let item of pagedItems">{{item.email}}</div>
+
+          <!-- pager -->
+          <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+              <li [ngClass]="{disabled:pager.currentPage === 1}"  style="margin-right: 20px;">
+                  <a (click)="setPage(1)">First</a>
+              </li>
+              <li [ngClass]="{disabled:pager.currentPage === 1}"  style="margin-right: 20px;">
+                  <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+              </li>
+              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"  style="margin-right: 20px;">
+                  <a (click)="setPage(page)">{{page}}</a>
+              </li>
+              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}"  style="margin-right: 20px;">
+                  <a (click)="setPage(pager.currentPage + 1)">Next</a>
+              </li>
+              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}"  style="margin-right: 20px;">
+                  <a (click)="setPage(pager.totalPages)">Last</a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</div>
