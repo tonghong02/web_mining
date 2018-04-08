@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Http, Headers, RequestOptions, ResponseOptions, Response } from '@angular/http';
 import { ToastrService } from 'ngx-toastr';
 
 import { TestService } from '../../services/test.service';
 import { ContactModel } from '../../models/contact.model';
 import { PaginationService } from '../../services/pagination.service';
 import * as _ from 'underscore';
+import { HtmlAstPath } from '@angular/compiler';
 
 @Component({
   selector: 'app-contact',
@@ -17,6 +19,8 @@ export class ContactComponent implements OnInit {
 
   contactForm: FormGroup;
   private allItems: any[];
+
+  public files: any[];
 
   // pager object
   pager: any = {};
@@ -29,14 +33,18 @@ export class ContactComponent implements OnInit {
     private _router: Router,
     private fb: FormBuilder,
     private _toastr: ToastrService,
-    private _pagination: PaginationService
+    private _pagination: PaginationService,
+    private _http: Http
   ) {
     this.contactForm = this.fb.group({
       email: [''],
       message: [''],
       name: [''],
-      subject: ['']
-    })
+      subject: [''],
+      image: ['']
+    });
+
+    this.files = [];
   }
 
   ngOnInit() {
@@ -81,6 +89,21 @@ export class ContactComponent implements OnInit {
           timeOut: 3000,
         });
       })
+  }
+
+  onFileChanged(event: any) {
+    this.files = event.target.files[0].name;
+    console.log(this.files);
+  }
+  
+  onUpload() {
+    const formData = new FormData();
+    for (const file of this.files) {
+        formData.append(name, file, file.name);
+    }
+    this._http.post('url', formData).subscribe(x => {
+      console.log(x)
+    });
   }
 
 }

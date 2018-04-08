@@ -16,13 +16,15 @@ import { PaginationService } from './services/pagination.service';
 import { ContactComponent } from './pages/contact/contact.component';
 import {AppRoutingModule } from './app.router';
 import { HomeComponent } from './pages/home/home.component';
+import { TemplateComponent } from './pages/template/template.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ContactComponent,
-    HomeComponent
+    HomeComponent,
+    TemplateComponent
   ],
   // add Module
   imports: [

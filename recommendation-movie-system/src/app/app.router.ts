@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppCustomPreload } from './app.routing.loader';
 import { ContactComponent } from './pages/contact/contact.component';
 import { HomeComponent } from './pages/home/home.component';
+import { TemplateComponent } from './pages/template/template.component';
 
 const appRouter: Routes = [
     // {
@@ -25,7 +26,10 @@ const appRouter: Routes = [
         path: 'contact',
         component: ContactComponent,
     },
-    // cant Active
+    {
+        path: 'template',
+        component: TemplateComponent,
+    },
     {
         path: '',
         redirectTo: '/home',
