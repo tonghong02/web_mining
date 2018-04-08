@@ -6,17 +6,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 
+
 // Import the Http Module and our Data Service
 import { HttpModule } from '@angular/http';
 
 import { AppConfig } from './config/app.config';
 import { ApiRequestService } from './services/api-request.service';
+import { ApiHeaderRequestService } from './services/api-header-request.service'
 import { TestService } from './services/test.service';
 import { PaginationService } from './services/pagination.service';
+import { AuthenticationService } from './services/authentication.service'
+
 import { ContactComponent } from './pages/contact/contact.component';
 import {AppRoutingModule } from './app.router';
 import { HomeComponent } from './pages/home/home.component';
 import { TemplateComponent } from './pages/template/template.component';
+import { LoginComponent } from './pages/login/login.component';
 
 
 @NgModule({
@@ -24,7 +29,8 @@ import { TemplateComponent } from './pages/template/template.component';
     AppComponent,
     ContactComponent,
     HomeComponent,
-    TemplateComponent
+    TemplateComponent,
+    LoginComponent
   ],
   // add Module
   imports: [
@@ -48,7 +54,9 @@ import { TemplateComponent } from './pages/template/template.component';
     AppConfig,
     ApiRequestService,
     TestService,
-    PaginationService
+    PaginationService,
+    ApiHeaderRequestService,
+    AuthenticationService
   ],
   //add Component
   bootstrap: [AppComponent]

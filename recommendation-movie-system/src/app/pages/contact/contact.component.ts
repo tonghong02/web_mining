@@ -48,20 +48,29 @@ export class ContactComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listContact();
+    // this.listContact();
+    this.listUser();
   }
 
-  listContact() {
-    this._test
-      .getContact()
-      .subscribe(data => {
-        console.log(data);
-        // set items to json response
-        this.allItems = data;
+  // listContact() {
+  //   this._test
+  //     .getContact()
+  //     .subscribe(data => {
+  //       console.log(data);
+  //       // set items to json response
+  //       this.allItems = data;
 
-        // initialize to page 1
-        this.setPage(1);
-      })
+  //       // initialize to page 1
+  //       this.setPage(1);
+  //     })
+  // }
+
+  listUser(){
+    console.log("list user")
+    this._test.getUser().subscribe(data => {
+      console.log(data);
+    });
+    console.log("haah")
   }
 
   setPage(page: number) {
@@ -77,18 +86,19 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this._test
-      .createContact(this.contactForm.value)
-      .subscribe(data => {
-        console.log('created success!!!');
-        this._toastr.success('Hello world!', 'Toastr fun!', { timeOut: 3000 });
-        this.listContact();
-        console.log(data);
-      }, err => {
-        this._toastr.error('everything is broken', 'Major Error', {
-          timeOut: 3000,
-        });
-      })
+    console.log("submit contact")
+    // this._test
+    //   .createContact(this.contactForm.value)
+    //   .subscribe(data => {
+    //     console.log('created success!!!');
+    //     this._toastr.success('Hello world!', 'Toastr fun!', { timeOut: 3000 });
+    //     this.listContact();
+    //     console.log(data);
+    //   }, err => {
+    //     this._toastr.error('everything is broken', 'Major Error', {
+    //       timeOut: 3000,
+    //     });
+    //   })
   }
 
   onFileChanged(event: any) {

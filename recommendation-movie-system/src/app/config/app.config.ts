@@ -17,7 +17,7 @@ export class AppConfig {
 
     public getDomainUrl(): string {
         // return `${this.pathDomain}/api/${this.versionApi}/`;
-        return `${this.pathDomain}/api/`
+        return `${this.pathDomain}/api`
     }
 
     public getVersionApi() {

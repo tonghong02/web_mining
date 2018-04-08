@@ -7,6 +7,7 @@ import { AppCustomPreload } from './app.routing.loader';
 import { ContactComponent } from './pages/contact/contact.component';
 import { HomeComponent } from './pages/home/home.component';
 import { TemplateComponent } from './pages/template/template.component';
+import { LoginComponent } from './pages/login/login.component';
 
 const appRouter: Routes = [
     // {
@@ -38,6 +39,10 @@ const appRouter: Routes = [
     {
         path: 'home',
         component: HomeComponent,
+    },
+    {
+        path: 'login',
+        component: LoginComponent,
     },
 ];
 
