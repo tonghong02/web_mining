@@ -33,6 +33,12 @@ export class ApiRequestService {
     }
     return out;
   };
+  private setRequestOptions() {
+    this.headers = new Headers({
+      'Content-Type': 'application/json',
+    });
+    this.options = new RequestOptions({ headers: this.headers });
+  }
 
   public catchError(err: Response) {
     let out: ResponseCustom = {};
@@ -51,6 +57,7 @@ export class ApiRequestService {
   }
 
   public get(pathApi: string, mapResponse?: any) {
+    this.setRequestOptions();
     mapResponse = this.mapResponseDefault;
     return this._http
       .get(`${this.apiUrl}${pathApi}`)
@@ -59,6 +66,7 @@ export class ApiRequestService {
   }
 
   public post(api: string, body: any, mapResponse?: any) {
+    // this.setRequestOptions();
     // accept mapping object data
     if (mapResponse && mapResponse !== 0 && typeof mapResponse !== 'function') {
       mapResponse = 0;
@@ -73,6 +81,7 @@ export class ApiRequestService {
   }
 
   public put(api: string, body: any, mapResponse?: any) {
+    this.setRequestOptions();
     // accept mapping object data
     if (mapResponse && mapResponse !== 0 && typeof mapResponse !== 'function') {
       mapResponse = 0;
@@ -87,6 +96,7 @@ export class ApiRequestService {
   }
 
   public delete(api: string, body?: any) {
+    this.setRequestOptions();
     return this._http
       .delete(this.apiUrl + api, body)
       .map(this.mapResponseDefault)

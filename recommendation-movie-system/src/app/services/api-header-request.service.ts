@@ -38,7 +38,7 @@ export class ApiHeaderRequestService {
         let out: ResponseCustom = {};
         //console.error(err.json());
         try {
-            out.D = err.json().errorMessage;
+            out.D = err.json();
             out.status = err.status;
             // if (out.status === 401){
             //     localStorage.removeItem('__token');
@@ -59,10 +59,12 @@ export class ApiHeaderRequestService {
       }
 
     public get(pathApi: string, mapResponse?: any) {
+        
         this.setRequestOptions();
+        console.log(this.headers);
         mapResponse = this.mapResponseDefault;
         return this._http
-            .get(`${this.apiUrl}${pathApi}`)
+            .get(`${this.apiUrl}${pathApi}`, this.options)
             .map(mapResponse)
             .catch(this.catchError);
     }
@@ -77,7 +79,7 @@ export class ApiHeaderRequestService {
             mapResponse = this.mapResponseDefault;
         }
         return this._http
-            .post(this.apiUrl + api, body)
+            .post(this.apiUrl + api, body, this.options)
             .map(mapResponse)
             .catch(this.catchError);
     }
@@ -92,15 +94,15 @@ export class ApiHeaderRequestService {
             mapResponse = this.mapResponseDefault;
         }
         return this._http
-            .put(this.apiUrl + api, body)
+            .put(this.apiUrl + api, body, this.options)
             .map(mapResponse)
             .catch(this.catchError);
     }
 
-    public delete(api: string, body?: any) {
+    public delete(api: string) {
         this.setRequestOptions();
         return this._http
-            .delete(this.apiUrl + api, body)
+            .delete(this.apiUrl + api,this.options )
             .map(this.mapResponseDefault)
             .catch(this.catchError);
     }

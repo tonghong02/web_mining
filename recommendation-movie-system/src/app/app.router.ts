@@ -8,6 +8,8 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { HomeComponent } from './pages/home/home.component';
 import { TemplateComponent } from './pages/template/template.component';
 import { LoginComponent } from './pages/login/login.component';
+import { SignupComponent } from './pages/signup/signup.component';
+import { ReviewComponent } from './pages/review/review.component';
 
 const appRouter: Routes = [
     // {
@@ -41,9 +43,22 @@ const appRouter: Routes = [
         component: HomeComponent,
     },
     {
+        path: '',
+        component: HomeComponent,
+    },
+    {
         path: 'login',
         component: LoginComponent,
     },
+    {
+        path: 'signup',
+        component: SignupComponent,
+    },
+    {
+        path: 'review/:id',
+        component: ReviewComponent,
+    },
+
 ];
 
 @NgModule({

@@ -33,30 +33,25 @@ export class AuthenticationService {
     this.userInfo = userInfo;
   }
 
+  public a(): any{
+    return this._apiRequest.get(`/movie`);
+  }
   public authenticate(body: any): any {
-    // return this._apiRequest.post(`/authenticate`, body);
-
-    // this._apiRequest
-    //   .post(`/authenticate`, body)
-    //   .subscribe(data => {
-    //     console.log("data authenication");
-    //     this.setUserInfo(data.json());
-    //     return data.json().token;
-    //   })
+    return this._apiRequest.post(`/login`, body)
 
 
-    return new Promise((resolve, reject) => {
-      this._http.post(`${this.apiUrl}/authenticate`, body)
-        .subscribe(data => {
-          console.log(data);
-          this.setUserInfo(data.json());
-          resolve(data.json().token);
-        },
-        err => {
-          reject(err.json());
-        }
-        );
-    });
+    // return new Promise((resolve, reject) => {
+    //   this._http.post(`${this.apiUrl}/login`, body, )
+    //     .subscribe(data => {
+    //       console.log(data);
+    //       this.setUserInfo(data.json());
+    //       resolve(data.json().token);
+    //     },
+    //     err => {
+    //       reject(err.json());
+    //     }
+    //     );
+    // });
   }
 
   public logout(): void {
