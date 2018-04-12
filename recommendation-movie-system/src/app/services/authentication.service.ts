@@ -3,14 +3,17 @@ import { Location } from '@angular/common';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
+import { JwtHelper } from 'angular2-jwt';
 
 import { AppConfig } from '../config/app.config';
-import { ApiRequestService } from './api-request.service'
+import { ApiRequestService } from './api-request.service';
+import { UserModel } from '../models/user.model'
 
 @Injectable()
 export class AuthenticationService {
   private userInfo: any = null;
-  private apiUrl: String;
+  private jwtHelper: JwtHelper = new JwtHelper();
+  private tokenAuth: string;
 
   constructor(
     private _http: Http,
@@ -18,10 +21,7 @@ export class AuthenticationService {
     private _location: Location,
     private _appConfig: AppConfig,
     private _apiRequest: ApiRequestService
-  ) {
-    // apiUrl = http://localhost:3000/api
-    this.apiUrl = `${this._appConfig.getDomainUrl()}`;
-  }
+  ) { }
 
   public getUserInfo(): any {
     if (!localStorage.current_user) return null;
@@ -33,60 +33,68 @@ export class AuthenticationService {
     this.userInfo = userInfo;
   }
 
-  public a(): any{
-    return this._apiRequest.get(`/movie`);
-  }
   public authenticate(body: any): any {
     return this._apiRequest.post(`/login`, body)
-
-
-    // return new Promise((resolve, reject) => {
-    //   this._http.post(`${this.apiUrl}/login`, body, )
-    //     .subscribe(data => {
-    //       console.log(data);
-    //       this.setUserInfo(data.json());
-    //       resolve(data.json().token);
-    //     },
-    //     err => {
-    //       reject(err.json());
-    //     }
-    //     );
-    // });
   }
 
   public logout(): void {
     localStorage.removeItem('token');
-    this._router.navigate(['/contact']);
+    localStorage.removeItem('current_user');
+    this._router.navigate(['/home']);
   }
-  // public loadUserInfo(): Promise<boolean> {
-  //   const token = localStorage.getItem('token');
-  //   return new Promise((resolve) => {
-  //     if (!token) {
-  //       this._router.navigate(['login']);
-  //       return resolve(false);
-  //     }
-  //     const headers = new Headers({
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer ' + token
-  //     });
-  //     const options = new RequestOptions({ headers: headers });
-  //     this._http
-  //       .get(`${this.apiUrl}/api/system/users/info`, options)
-  //       .subscribe(
-  //       (data) => {
-  //         this.userInfo = data.json();
-  //         this.userInfo.token = token;
-  //         resolve(true);
-  //       },
-  //       (err) => {
-  //         localStorage.removeItem('token');
-  //         this._router.navigate(['login']);
-  //         resolve(false);
-  //       }
-  //       );
-  //   });
-  // }
 
+  // ====== token =====
+  public setToken(_tokenParam: string) {
+    this.tokenAuth = localStorage.getItem('token') || _tokenParam;
+  }
 
+  public getToken() {
+    return localStorage.getItem('token');
+  }
 
+  public jwtDecode(): UserModel {
+    try {
+      let tokenTemp = this.jwtHelper.decodeToken(localStorage.getItem('token'));
+      return tokenTemp;
+    } catch (e) {
+      localStorage.removeItem('token');
+      this._router.navigate(['/login']);
+    }
+  }
+
+  public verifyToken(): Boolean {
+    // todo request api verify token
+    if (!localStorage.getItem('token')) {
+      this._router.navigate(['/home']);
+      return false;
+    }
+    return true;
+  }
 }
+
+@Injectable()
+export class UserCanActive implements CanActivate {
+  constructor(private auth: AuthenticationService,
+    private _router: Router) {
+  }
+
+  canActivate(route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    return this.checkLogin();
+  }
+
+  checkLogin() {
+    if (this.auth.verifyToken()) {
+      console.log('checklogin true');
+      return true;
+    }
+    // Navigate to the login page with extras
+    this._router.navigate(['/home']);
+    console.log('checklogin false');
+    return false;
+  }
+}
+
+
+
+

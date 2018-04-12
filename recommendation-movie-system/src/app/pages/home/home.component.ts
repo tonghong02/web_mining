@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { MovieService } from '../../services/movie.service'
 
 @Component({
   selector: 'app-home',
@@ -7,9 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  listMovies: any;
+
+  constructor(private _movie: MovieService, private _router: Router) { }
 
   ngOnInit() {
+    this.getListMovie();
+
+  }
+
+  getListMovie(){
+    this._movie.getListMovie(``).subscribe(data => {
+      this.listMovies = data;
+      console.log(this.listMovies);
+    })
+  }
+
+  detailMovie(id: string){
+    this._router.navigateByUrl(`/phim/${id}`);
   }
 
 }

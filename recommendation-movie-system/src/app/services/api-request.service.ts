@@ -42,13 +42,12 @@ export class ApiRequestService {
 
   public catchError(err: Response) {
     let out: ResponseCustom = {};
-    //console.error(err.json());
     try {
-      out.D = err.json().errorMessage;
+      out.D = err.json();
       out.status = err.status;
-      // if (out.status === 401){
-      //     localStorage.removeItem('__token');
-      // }
+      if (out.status === 401){
+          localStorage.removeItem('__token');
+      }
     }
     catch (e) {
       console.log("Error catchError")
@@ -67,7 +66,6 @@ export class ApiRequestService {
 
   public post(api: string, body: any, mapResponse?: any) {
     // this.setRequestOptions();
-    // accept mapping object data
     if (mapResponse && mapResponse !== 0 && typeof mapResponse !== 'function') {
       mapResponse = 0;
     }
@@ -82,7 +80,6 @@ export class ApiRequestService {
 
   public put(api: string, body: any, mapResponse?: any) {
     this.setRequestOptions();
-    // accept mapping object data
     if (mapResponse && mapResponse !== 0 && typeof mapResponse !== 'function') {
       mapResponse = 0;
     }

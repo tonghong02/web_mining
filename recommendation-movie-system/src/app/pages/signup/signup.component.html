@@ -1,97 +1,69 @@
-<div class="logo_products">
-  <div class="container">
-
-    <div class="w3ls_logo_products_left">
-      <h1>
-        <a href="index.html">F5 TEAM</a>
-      </h1>
-    </div>
-    <div class="w3l_search">
-      <form action="#" method="post">
-        <input type="search" name="Search" placeholder="Search for a Product..." required="">
-        <button type="submit" class="btn btn-default search" aria-label="Left Align">
-          <i class="fa fa-search" aria-hidden="true"> </i>
-        </button>
-        <div class="clearfix"></div>
-      </form>
-    </div>
-
-    <div class="clearfix"> </div>
-  </div>
-</div>
-<!-- //header -->
-<!-- navigation -->
-<div class="navigation-agileits">
-  <div class="container">
-    <nav class="navbar navbar-default">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header nav_2">
-        <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
-        <ul class="nav navbar-nav" style="display: inline;">
-          <li class="active">
-            <a href="index.html" class="act">HOME</a>
-          </li>
-          <li>
-            <a href="contact.html">PHIM MỚI</a>
-          </li>
-          <li>
-            <a href="contact.html">PHIM LẺ</a>
-          </li>
-          <li>
-            <a href="contact.html">PHIM BỘ</a>
-          </li>
-          <li>
-            <a href="contact.html">TOP IMDB 2017</a>
-          </li>
-          <li>
-            <a href="/contact">LIÊN HỆ</a>
-          </li>
-         
-        </ul>
-      </div>
-    </nav>
-  </div>
-</div>
-
-<!-- //navigation -->
 <!-- register -->
 <div class="register">
   <div class="container">
     <h2>Register Here</h2>
     <div class="login-form-grids">
       <h5>profile information</h5>
-      <form action="#" method="post">
-        <input type="text" placeholder="First Name..." required=" " >
-        <input type="text" placeholder="Last Name..." required=" " >
-      </form>
-      <div class="register-check-box">
-        <div class="check">
-          <label class="checkbox"><input type="checkbox" name="checkbox"><i> </i>Subscribe to Newsletter</label>
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <input type="email" placeholder="Enter email" formControlName="email" (focus)="mesEmail = ''">
+          <span *ngIf="mesEmail" style="color: red;">
+            {{mesEmail}}
+          </span>
         </div>
-      </div>
-      <h6>Login information</h6>
-        <form action="#" method="post">
-        <input type="email" placeholder="Email Address" required=" " >
-        <input type="password" placeholder="Password" required=" " >
-        <input type="password" placeholder="Password Confirmation" required=" " >
-        <div class="register-check-box">
-          <div class="check">
-            <label class="checkbox"><input type="checkbox" name="checkbox"><i> </i>I accept the terms and conditions</label>
+        <div class="form-group">
+          <input class="form-group" type="text" placeholder="Enter fullname..." formControlName="name">
+        </div>
+        <div class="form-group">
+          <input class="form-group" type="text" placeholder="Enter address..." formControlName="address">
+        </div>
+        <div>
+          <div class="form-group">
+            <select class="form-control" formControlName="birth" (focus)="mesBirth = ''">
+              <option [ngValue]="''"> --- Select year of birth ---</option>
+              <option *ngFor="let birth of createRange(1970, 2018)" [ngValue]="birth">
+                {{ birth }}
+              </option>
+            </select>
+            <span *ngIf="mesBirth" style="color: red;">
+              {{ mesBirth }}
+            </span>
+          </div>
+          <div class="form-group">
+            <select class="form-control" formControlName="sex" (focus)="mesSex = ''">
+              <option [ngValue]="''"> --- Select year sex ---</option>
+              <option *ngFor="let item of ['Female', 'Male']" [ngValue]="item">
+                {{ item }}
+              </option>
+            </select>
+            <span *ngIf="mesSex" style="color: red;">
+              {{ mesSex }}
+            </span>
           </div>
         </div>
-        <input type="submit" value="Register">
+        <h6>Login information</h6>
+        <div class="form-group">
+          <input type="text" placeholder="Enter username" formControlName="username" (focus)="mesUsername = ''">
+          <span *ngIf="mesUsername" style="color: red;">
+            {{mesUsername}}
+          </span>
+        </div>
+        <div class="form-group">
+          <input type="password" placeholder="Enter password" formControlName="password" (focus)="mesPassword = ''">
+          <span *ngIf="mesPassword" style="color: red;">
+            {{mesPassword}}
+          </span>
+        </div>
+        <!-- <div class="form-group">
+          <input type="password" placeholder="Confirm password" formControlName="confirm_password">
+          <span *ngIf="cpwd.hasError('invalid')"> Invalid Password </span>
+        </div> -->
+        <input type="submit" value="REGISTER">
       </form>
     </div>
-    <div class="register-home">
-      <a href="index.html">Home</a>
-    </div>
+
   </div>
 </div>
 <!-- //register -->
+
+<pre> {{ signupForm.value | json}}</pre>

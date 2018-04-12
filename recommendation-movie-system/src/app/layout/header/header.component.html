@@ -2,17 +2,89 @@
   <div class="container">
     <div class="agile-login">
       <ul>
-        <li>
+        <li *ngIf="!isLogin" >
           <a href="/signup"> Đăng kí </a>
         </li>
-        <li>
+        <li *ngIf="!isLogin">
           <a href="/login">Đăng nhập</a>
         </li>
-        <li>
-          <a href="#">Đăng xuất</a>
+        <li *ngIf="isLogin">
+          <a href="/profile">Hello <b>  {{ currentUser.username }} !  </b></a>
+        </li>
+        <li *ngIf="isLogin">
+          <a href="#" (click) = "logout()">Đăng xuất</a>
         </li>
       </ul>
     </div>
     <div class="clearfix"> </div>
   </div>
 </div>
+
+<!-- header -->
+<div class="logo_products">
+  <div class="container">
+
+    <div class="w3ls_logo_products_left">
+      <h1>
+        <a href="/home">F5 TEAM</a>
+      </h1>
+    </div>
+    <div class="w3l_search">
+      <form (ngSubmit)="searchMovie()">
+        <input id="search" type="text" name="Search" placeholder="Search for name movie..." required="" #search (keyup)="onKey(search.value)">
+        <button type="submit" class="btn btn-default search" aria-label="Left Align">
+          <i class="fa fa-search" aria-hidden="true"> </i>
+        </button>
+        <div class="clearfix"></div>
+      </form>
+    </div>
+    <!-- <pre> {{ search.value | json}}</pre> -->
+
+    <div class="clearfix"> </div>
+  </div>
+</div>
+<!-- //header -->
+<!-- navigation -->
+<div class="navigation-agileits">
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header nav_2">
+        <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+        <ul class="nav navbar-nav" style="display: inline;">
+          <li class="active">
+            <a href="/home" class="act">HOME</a>
+          </li>
+          <li>
+            <a href="/phimmoi">PHIM MỚI</a>
+          </li>
+          <li>
+            <a href="/phimle">PHIM LẺ</a>
+          </li>
+          <li>
+            <a href="/phimbo">PHIM BỘ</a>
+          </li>
+          <li>
+            <a href="/top-imdb">TOP IMDB 2017</a>
+          </li>
+          <li>
+            <a href="/review">ĐÁNH GIÁ</a>
+          </li>
+          <li *ngIf="isLogin">
+            <a href="/contact">LIÊN HỆ</a>
+          </li>
+         
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- //navigation -->

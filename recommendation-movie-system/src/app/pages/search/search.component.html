@@ -1,0 +1,43 @@
+<div class="newproducts-w3agile">
+    <div class="container">
+      <h3>New offers</h3>
+      <div class="agile_top_brands_grids">
+        <div class="col-md-3 top_brand_left-1" *ngFor="let movie of listMovies" (click)="detailMovie(movie._id)">
+          <div class="hover14 column">
+            <div class="agile_top_brand_left_grid">
+              
+              <div class="agile_top_brand_left_grid1">
+                <figure>
+                  <div class="snipcart-item block">
+                    <div class="snipcart-thumb">
+                      <a href="/phim/{{movie._id}}">
+                        <img title=" " alt=" " src="assets/images/14.png">
+                      </a>
+                      <p>{{ movie?.title }}</p>
+                      <div class="stars">
+                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                        <i class="fa fa-star gray-star" aria-hidden="true"></i>
+                      </div>
+                      <h4> IMDB: {{ movie?.imdb }}
+                      </h4>
+                      <p> {{ movie?.intro }} </p>
+                    </div>
+                    <div class="snipcart-details top_brand_home_details">
+                      <form action="#" method="post">
+                          <input type="submit" name="submit" value="VIEW MORE" class="button">
+                      </form>
+                    </div>
+                  </div>
+                </figure>
+              </div>
+            </div>
+          </div>
+          <br> <br>
+        </div>
+        <div class="clearfix"> </div>
+      </div>
+    </div>
+  </div>

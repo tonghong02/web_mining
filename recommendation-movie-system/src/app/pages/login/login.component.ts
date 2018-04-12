@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 //
 import { AuthenticationService } from '../../services/authentication.service';
 import { ApiHeaderRequestService } from '../../services/api-header-request.service';
-import { TestService } from '../../services/test.service';
+import { HeaderComponent } from '../../layout/header/header.component';
 
 @Component({
   selector: 'app-login',
@@ -16,44 +16,49 @@ import { TestService } from '../../services/test.service';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  err: boolean = false;
+  mesUsername: string = '';
+  mesPassword: string = '';
 
-  constructor(private _apiHeader: ApiHeaderRequestService, private fb: FormBuilder, private _router: Router, private _toastr: ToastrService, private _test: TestService, private _authentication: AuthenticationService) {
+  constructor(private _apiHeader: ApiHeaderRequestService, private fb: FormBuilder, private _router: Router, private _toastr: ToastrService, private _authentication: AuthenticationService) {
     this.loginForm = this.fb.group({
-      password: ['123456'],
-      username: ['hong04'],
+      password: ['', Validators.required],
+      username: ['', Validators.required],
     });
   }
 
   ngOnInit() {
-    console.log("hahahah")
-    console.log(localStorage.getItem('token'))
-
   }
 
   onSubmit() {
     console.log("sumited");
-    this._apiHeader.get(`/movie`).subscribe(data => {
-      console.log(data);
-    })
+    if (this.loginForm.controls.username.invalid) {
+      this.mesUsername = 'Username is required!';
+      this.err = true;
+    }
+    if (this.loginForm.controls.password.invalid) {
+      this.mesPassword = 'Password is required!';
+      this.err = true;
+    }
 
-    this._authentication.authenticate(this.loginForm.value).subscribe(data => {
-      console.log(data);
-      if (data.success) {
-        this._toastr.success('Success!', 'Login success!');
-        // this._router.navigate(['/home']);
-        this._authentication.setUserInfo(data);
-        localStorage.setItem('token', data.token);
-      }
-      else {
+    if (this.err === false) {
+      this._authentication.authenticate(this.loginForm.value).subscribe(data => {
+        console.log(data);
+        if (data.success) {
+          this._toastr.success('Success!', 'Login success!');
+          this._authentication.setUserInfo(data);
+          localStorage.setItem('token', data.token);
+          HeaderComponent.usernameLogin.next(true);
+          this._router.navigate(['/home']);
+          
+        }
+        else {
+          this._toastr.error('Error!', 'Login fail!');
+        }
+
+      }, err => {
         this._toastr.error('Error!', 'Login fail!');
-      }
-
-    }, err => {
-      this._toastr.error('Error!', 'Login fail!');
-    })
-  }
-
-  logout() {
-    this._authentication.logout();
+      })
+    }
   }
 }
