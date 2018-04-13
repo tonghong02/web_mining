@@ -28,6 +28,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('current_user');
   }
 
   onSubmit() {
@@ -48,7 +50,7 @@ export class LoginComponent implements OnInit {
           this._toastr.success('Success!', 'Login success!');
           this._authentication.setUserInfo(data);
           localStorage.setItem('token', data.token);
-          HeaderComponent.usernameLogin.next(true);
+          HeaderComponent.usernameLogin.next(data.user);
           this._router.navigate(['/home']);
           
         }

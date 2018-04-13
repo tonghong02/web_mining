@@ -22,6 +22,8 @@ export class DetailReviewComponent implements OnInit {
   currentUser: UserModel;
   reviewForm: FormGroup;
   mesRate: string = '';
+  mesContent: string = '';
+  isErr = false;
   listReviews: any;
 
   src1: string = 'assets/images/star.png';
@@ -52,13 +54,21 @@ export class DetailReviewComponent implements OnInit {
     this.reviewForm = this.fb.group({
       user: [this.currentUser._id, Validators.required],
       movie: [this.id, Validators.required],
-      rate: [0, Validators.required],
-      content: ['']
+      rate: [null, Validators.required],
+      content: ['', Validators.required]
     })
   }
 
   ngOnInit() {
     this.getListReview();
+  }
+
+  createRange(number) {
+    var items: number[] = [];
+    for (var i = 1; i <= number; i++) {
+      items.push(i);
+    }
+    return items;
   }
 
   setRate(rate: number) {
@@ -118,16 +128,32 @@ export class DetailReviewComponent implements OnInit {
 
   review() {
     console.log("REviewed!!!!!!!!!!!!!");
-    this._review.createReview(this.reviewForm.value).subscribe(data => {
-      if (data.err) {
-        this._toastr.error(data.err, 'Error!');
-      }
-      else {
-        this.getListReview();
-        this._toastr.success('Review success!', 'Success!');
-      }
-      console.log(data);
-    })
+    if (this.reviewForm.get('rate').hasError('required')) {
+      this.mesRate = 'Ratesdsad and content is required';
+      this.isErr = true;
+    }
+    if (this.reviewForm.get('content').hasError('required')) {
+      this.mesContent = 'Rate and content is required';
+      this.isErr = true;
+    }
+    console.log(this.isErr);
+
+    if(this.isErr === false){
+      this._review.createReview(this.reviewForm.value).subscribe(data => {
+        if (data.err) {
+          this._toastr.error(data.err, 'Error!');
+        }
+        else {
+          this.reviewForm.controls['content'].patchValue('');
+          this.setRate(0);
+          this.getListReview();
+          this._toastr.success('Review success!', 'Success!');
+        }
+        console.log(data);
+      })
+    }
+    
+    
   }
 
 

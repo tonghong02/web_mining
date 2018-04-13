@@ -20,6 +20,8 @@ export class HeaderComponent implements OnInit {
   currentUser: any;
 
   constructor(private _router: Router, private _authentication: AuthenticationService, private _userCanActive: UserCanActive, private _movie: MovieService) {
+
+
     if (this._authentication.getToken()) {
       this.isLogin = true;
       if (this._authentication.jwtDecode) {
@@ -28,6 +30,11 @@ export class HeaderComponent implements OnInit {
         console.log(this.currentUser);
       }
     }
+    HeaderComponent.usernameLogin.subscribe(res => {
+      this.isLogin = true;
+      this.currentUser = res;
+    })
+    console.log(this.isLogin);
   }
 
   ngOnInit() {

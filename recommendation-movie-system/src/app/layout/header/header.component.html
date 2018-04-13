@@ -74,7 +74,7 @@
           <li>
             <a href="/top-imdb">TOP IMDB 2017</a>
           </li>
-          <li>
+          <li  *ngIf="isLogin">
             <a href="/review">ĐÁNH GIÁ</a>
           </li>
           <li *ngIf="isLogin">

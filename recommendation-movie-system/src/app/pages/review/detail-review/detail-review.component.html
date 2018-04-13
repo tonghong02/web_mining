@@ -1,5 +1,5 @@
 <!-- //breadcrumbs -->
-<div class="products">
+<div class="products" style="padding-bottom: 1em;">
   <div class="container">
     <div class="agileinfo_single">
 
@@ -10,7 +10,7 @@
         <div class="col-md-offset-1 col-md-7 agileinfo_single_right">
 
           <h2>{{ movie?.title }}</h2>
-          <div class="rating1" >
+          <div class="rating1">
             <!-- <span class="starRating">
               <input id="rating5" type="radio" (mouseenter)="setValueRadio(5)" formControlName="rate" >
               <label for="rating5">5</label>
@@ -23,12 +23,22 @@
               <input id="rating1" type="radio" (mouseenter)="setValueRadio(1)" formControlName="rate">
               <label for="rating1">1</label>
             </span> -->
-            <span><img [src]="src1" (mouseenter)="setRate(1)"></span>
-            <span><img [src]="src2" (mouseenter)="setRate(2)"></span>
-            <span><img [src]="src3" (mouseenter)="setRate(3)"></span>
-            <span><img [src]="src4" (mouseenter)="setRate(4)"></span>
-            <span><img [src]="src5" (mouseenter)="setRate(5)"></span>
-
+            <span>
+              <img [src]="src1" (mouseenter)="setRate(1)">
+            </span>
+            <span>
+              <img [src]="src2" (mouseenter)="setRate(2)">
+            </span>
+            <span>
+              <img [src]="src3" (mouseenter)="setRate(3)">
+            </span>
+            <span>
+              <img [src]="src4" (mouseenter)="setRate(4)">
+            </span>
+            <span>
+              <img [src]="src5" (mouseenter)="setRate(5)">
+            </span>
+            <p *ngIf="mesRate" class="alert alert-danger"> {{ mesRate }}</p>
           </div>
           <div class="w3agile_description">
             <h4>Description :</h4>
@@ -42,10 +52,12 @@
               <h4 class="m-sing">Country: {{ movie?.country }}</h4>
               <h4 class="m-sing">Type: {{ movie?.type }}</h4>
             </div>
-            <div *ngIf="isLogin" class="form-group" id="comment" >
+            <div *ngIf="isLogin" class="form-group" id="comment">
               <!-- <label>Review</label> -->
-              <textarea rows="5"  style="width: 100%; padding: 2%; border-radius: 2%;" formControlName="content"></textarea>
+              <textarea rows="5" style="width: 100%; padding: 2%; border-radius: 2%;" formControlName="content" (focus)="mesContent=''"></textarea>
+              <p *ngIf="mesContent" class="alert alert-danger"> {{ mesContent }}</p>
             </div>
+
             <div *ngIf="isLogin" class="snipcart-details agileinfo_single_right_details">
               <input type="submit" name="submit" value="REVIEW" class="button">
             </div>
@@ -58,10 +70,24 @@
   </div>
   <!-- </div> -->
 </div>
-<pre>{{ reviewForm.value | json }}</pre>
+<!-- <pre>{{ reviewForm.value | json }}</pre> -->
 <!-- list review -->
-<div>
-  <h2>This is list review for movie</h2>
+
+<br>
+<div class="container">
+    <div class="newproducts-w3agile" style="background: none; padding: 3em 0;">
+        <h3>This is list review for movie</h3>
+      </div>
+  <div class="list-review" *ngFor="let item of listReviews">
+    <h4>{{ item?.user?.username }}</h4>
+    <div>
+      <span class="rate-group" *ngFor="let star of createRange(item?.rate);">
+        <img src="assets/images/star1.png">
+      </span>
+    </div>
+    <p>{{ item?.content }}</p>
+    <hr>
+  </div>
 </div>
 
 <!-- // list review -->
