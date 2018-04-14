@@ -10,19 +10,7 @@
         <div class="col-md-offset-1 col-md-7 agileinfo_single_right">
 
           <h2>{{ movie?.title }}</h2>
-          <div class="rating1">
-            <!-- <span class="starRating">
-              <input id="rating5" type="radio" (mouseenter)="setValueRadio(5)" formControlName="rate" >
-              <label for="rating5">5</label>
-              <input id="rating4" type="radio" (mouseenter)="setValueRadio(4)" formControlName="rate">
-              <label for="rating4">4</label>
-              <input id="rating3" type="radio" (mouseenter)="setValueRadio(3)" formControlName="rate">
-              <label for="rating3">3</label>
-              <input id="rating2" type="radio" (mouseenter)="setValueRadio(2)" formControlName="rate">
-              <label for="rating2">2</label>
-              <input id="rating1" type="radio" (mouseenter)="setValueRadio(1)" formControlName="rate">
-              <label for="rating1">1</label>
-            </span> -->
+          <div class="rating1" *ngIf="isLogin">
             <span>
               <img [src]="src1" (mouseenter)="setRate(1)">
             </span>
@@ -53,7 +41,6 @@
               <h4 class="m-sing">Type: {{ movie?.type }}</h4>
             </div>
             <div *ngIf="isLogin" class="form-group" id="comment">
-              <!-- <label>Review</label> -->
               <textarea rows="5" style="width: 100%; padding: 2%; border-radius: 2%;" formControlName="content" (focus)="mesContent=''"></textarea>
               <p *ngIf="mesContent" class="alert alert-danger"> {{ mesContent }}</p>
             </div>
@@ -68,16 +55,15 @@
     </div>
     <div class="clearfix"> </div>
   </div>
-  <!-- </div> -->
 </div>
 <!-- <pre>{{ reviewForm.value | json }}</pre> -->
 <!-- list review -->
 
 <br>
 <div class="container">
-    <div class="newproducts-w3agile" style="background: none; padding: 3em 0;">
-        <h3>This is list review for movie</h3>
-      </div>
+  <div class="newproducts-w3agile" style="background: none; padding: 3em 0;">
+    <h3>This is list review for movie</h3>
+  </div>
   <div class="list-review" *ngFor="let item of listReviews">
     <h4>{{ item?.user?.username }}</h4>
     <div>

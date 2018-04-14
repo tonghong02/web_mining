@@ -99,10 +99,10 @@ const appRouter: Routes = [
                 path: 'review',
                 component: ReviewComponent,
             },
-            {
-                path: 'review/:id',
-                component: DetailReviewComponent,
-            },
+            // {
+            //     path: 'review/:id',
+            //     component: DetailReviewComponent,
+            // },
         ]
     }
 ];

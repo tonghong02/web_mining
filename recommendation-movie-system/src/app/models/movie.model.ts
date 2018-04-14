@@ -8,4 +8,5 @@ export class MovieModel {
     intro: string;
     category: string;
     country: string;
+    rate: number;
 }

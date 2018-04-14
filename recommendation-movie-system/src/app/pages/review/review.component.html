@@ -16,7 +16,7 @@
                                         </a>
                                         <p>{{ movie?.movie?.title }}</p>
                                         <div class="stars">
-                                            <i class="fa fa-star blue-star" aria-hidden="true" style="color: green;" *ngFor="let i of createRange(3)"></i>
+                                            <i class="fa fa-star blue-star" aria-hidden="true" style="color: green;" *ngFor="let i of createRange(movie?.rate)"></i>
                                             
                                         </div>
                                         <h4> IMDB: {{ movie?.movie?.imdb }}
