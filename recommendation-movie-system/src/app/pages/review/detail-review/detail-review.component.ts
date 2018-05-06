@@ -7,6 +7,7 @@ import * as _ from "lodash";
 
 import { MovieService } from '../../../services/movie.service';
 import { ReviewService } from '../../../services/review.service';
+import { HistoryService } from '../../../services/history.service';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { MovieModel } from '../../../models/movie.model';
 import { UserModel } from '../../../models/user.model'
@@ -35,7 +36,7 @@ export class DetailReviewComponent implements OnInit {
   src4: string = 'assets/images/star.png';
   src5: string = 'assets/images/star.png';
 
-  constructor(private fb: FormBuilder, private _toastr: ToastrService, private _movie: MovieService, private _route: ActivatedRoute, private _authentication: AuthenticationService, private _review: ReviewService) {
+  constructor(private fb: FormBuilder, private _toastr: ToastrService, private _movie: MovieService, private _route: ActivatedRoute, private _authentication: AuthenticationService, private _review: ReviewService, private _history: HistoryService) {
     this._route.params.subscribe(params => {
       this.id = params['id'];
       this._movie.detailMovie(this.id).subscribe(data => {
@@ -46,13 +47,25 @@ export class DetailReviewComponent implements OnInit {
     });
 
     if (this._authentication.getToken()) {
-
       this.isLogin = true;
       if (this._authentication.jwtDecode) {
         this.currentUser = this._authentication.jwtDecode();
         this.idUser = this.currentUser._id;
         console.log("current user")
         console.log(this.currentUser);
+        // add movie into history
+        let body = {
+          user: this.idUser,
+          movie: this.id
+        }
+        console.log("body")
+        console.log(body)
+        this._history.createHistory(body).subscribe(data => {
+          console.log("create history");
+          console.log(data);
+        }, err => {
+          console.log(err);
+        })
       }
     }
     console.log(this.currentUser)
@@ -130,6 +143,8 @@ export class DetailReviewComponent implements OnInit {
       console.log("list reviews!!!!")
       console.log(this.listReviews);
 
+    }, err => {
+      console.log(err)
     })
   }
 
@@ -244,6 +259,8 @@ export class DetailReviewComponent implements OnInit {
             }
           })
         }
+      }, err => {
+        console.log(err)
       })
     }
   }
