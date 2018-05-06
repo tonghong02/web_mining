@@ -2,17 +2,19 @@
   <div class="container">
     <div class="agile-login">
       <ul>
-        <li *ngIf="!isLogin" >
+        <li *ngIf="!isLogin">
           <a href="/signup"> Đăng kí </a>
         </li>
         <li *ngIf="!isLogin">
           <a href="/login">Đăng nhập</a>
         </li>
         <li *ngIf="isLogin">
-          <a href="/profile">Hello <b>  {{ currentUser.username }} !  </b></a>
+          <a href="/profile">Hello
+            <b> {{ currentUser.username }} ! </b>
+          </a>
         </li>
         <li *ngIf="isLogin">
-          <a href="#" (click) = "logout()">Đăng xuất</a>
+          <a href="#" (click)="logout()">Đăng xuất</a>
         </li>
       </ul>
     </div>
@@ -60,27 +62,53 @@
       <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
         <ul class="nav navbar-nav" style="display: inline;">
           <li class="active">
-            <a href="/home" class="act">HOME</a>
+            <a routerLink="/home" class="act">HOME</a>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">THỂ LOẠI
+              <!-- <b class="caret"></b> -->
+            </a>
+            <ul class="dropdown-menu multi-column columns-3">
+              <div class="row">
+                <div class="multi-gd-img">
+                  <ul class="multi-column-dropdown">
+                    <h6>TẤT CẢ THỂ LOẠI</h6>
+                    <li>
+                      <a routerLink="#">PHIM HANHF ĐỘNG</a>
+                    </li>
+                    <li>
+                      <a routerLink="#">PHIM TÌNH CẢM</a>
+                    </li>
+                    <li>
+                      <a routerLink="#">PHIM HÀI HƯỚC</a>
+                    </li>
+                    <li>
+                      <a routerLink="#">PHIM VIỄN TƯỞNG</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </ul>
           </li>
           <li>
-            <a href="/phimmoi">PHIM MỚI</a>
+            <a routerLink="/phimmoi">PHIM MỚI</a>
           </li>
           <li>
-            <a href="/phimle">PHIM LẺ</a>
+            <a routerLink="/phimle">PHIM LẺ</a>
           </li>
           <li>
-            <a href="/phimbo">PHIM BỘ</a>
+            <a routerLink="/phimbo">PHIM BỘ</a>
           </li>
           <li>
-            <a href="/top-imdb">TOP IMDB 2017</a>
-          </li>
-          <li  *ngIf="isLogin">
-            <a href="/review">ĐÁNH GIÁ</a>
+            <a routerLink="/top-imdb">TOP IMDB 2017</a>
           </li>
           <li *ngIf="isLogin">
-            <a href="/contact">LIÊN HỆ</a>
+            <a routerLink="/review">ĐÁNH GIÁ</a>
           </li>
-         
+          <li *ngIf="isLogin">
+            <a routerLink="/contact">LIÊN HỆ</a>
+          </li>
+
         </ul>
       </div>
     </nav>
