@@ -4,12 +4,13 @@
     <div class="agileinfo_single">
 
       <div class="col-md-4 agileinfo_single_left">
-        <img id="example" src="assets/images/p4.jpg" alt=" " class="img-responsive">
+        <img id="example" [src]="movie?.linkBackgrounds" alt=" " class="img-responsive">
       </div>
       <form [formGroup]="reviewForm" (ngSubmit)="review()">
         <div class="col-md-offset-1 col-md-7 agileinfo_single_right">
 
-          <h2>{{ movie?.title }}</h2>
+          <h2 style="margin-bottom: 0px;">{{ movie?.title }}</h2>
+          <h4 style="text-transform: capitalize;">( {{movie?.engTitle}} )</h4>
           <div class="rating1" *ngIf="isLogin">
             <span>
               <img [src]="src1" (mouseenter)="setRate(1)">
@@ -29,18 +30,20 @@
             <p *ngIf="mesRate" class="alert alert-danger"> {{ mesRate }}</p>
           </div>
           <div class="w3agile_description">
-            <h4>Description :</h4>
-            <p>{{ movie?.intro }}</p>
+            <h4 class="text-bold">Description :</h4>
+            <div style="text-align:justify;">{{ movie?.content }}</div>
+            <p><a [href]="'http://www.' + movie?.linkWatch" target="_blank">Xem phim</a></p>
           </div>
           <div class="snipcart-item block">
             <div class="snipcart-thumb agileinfo_single_right_snipcart">
-              <h4 class="m-sing">IMDB: {{ movie?.imdb }}</h4>
-              <h4 class="m-sing">Year: {{ movie?.year }}</h4>
-              <h4 class="m-sing">Category: {{ movie?.category }}</h4>
-              <h4 class="m-sing">Country: {{ movie?.country }}</h4>
-              <h4 class="m-sing">Type: {{ movie?.type }}</h4>
+              <p *ngIf="movie?.imdb"><span class="text-bold">IMDB:</span> {{ movie?.imdb }}</p>
+              <p *ngIf="movie?.rate"><span class="text-bold">RATE:</span> {{ movie?.rate }}</p>
+              <p><span class="text-bold">YEAR:</span> {{ movie?.year }}</p>
+              <p><span class="text-bold">CATEGORY:</span> {{normalizeCategory(movie?.category)}}</p>
+              <p style="text-transform: capitalize;"><span class="text-bold">COUNTRY:</span> {{ movie?.country }}</p>
             </div>
             <div *ngIf="isLogin" class="form-group" id="comment">
+              <p><span class="text-bold">REVIEW:</span></p>
               <textarea rows="5" style="width: 100%; padding: 2%; border-radius: 2%;" formControlName="content" (focus)="mesContent=''"></textarea>
               <p *ngIf="mesContent" class="alert alert-danger"> {{ mesContent }}</p>
             </div>
@@ -62,7 +65,7 @@
 <br>
 <div class="container">
   <div class="newproducts-w3agile" style="background: none; padding: 3em 0;">
-    <h3>This is list review for movie</h3>
+    <h3>list review for movie</h3>
   </div>
   <div class="list-review" *ngFor="let item of listReviews">
     <h4>{{ item?.user?.username }}</h4>

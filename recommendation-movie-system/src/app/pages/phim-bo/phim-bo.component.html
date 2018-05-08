@@ -1,30 +1,77 @@
-
 <div>
-  <div class="container">
-      <div class="text-center">
-          <h1>Angular 2 - Pagination Example with logic like Google</h1>
+    <!-- <div class="container"> -->
+        <!-- <div class="text-center"> -->
+            <!-- new -->
+            <div class="newproducts-w3agile">
+                <div class="container">
+                    <h3>List reviews</h3>
+                    <div class="agile_top_brands_grids">
+                        <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie._id)">
+                            <div class="hover14 column">
+                                <div class="agile_top_brand_left_grid">
+                                    <div class="agile_top_brand_left_grid_pos">
+                                        <img src="assets/images/offer.png" alt=" " class="img-responsive">
+                                    </div>
 
-          <!-- items being paged -->
-          <div *ngFor="let item of pagedItems">{{item.email}}</div>
+                                    <div class="agile_top_brand_left_grid1">
+                                        <figure>
+                                            <div class="snipcart-item block">
+                                                <div class="snipcart-thumb">
+                                                    <a href="/phim/{{movie._id}}">
+                                                        <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
+                                                    </a>
+                                                    <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%;">{{ movie?.title }}</h4>
+                                                    <!-- <div class="stars">
+                                            <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star gray-star" aria-hidden="true"></i>
+                                          </div> -->
+                                                    <p> YEAR: {{ movie?.year }} </p>
+                                                    <!-- <h4> YEAR: {{ movie?.year }}</h4> -->
+                                                    <!-- <h4> COUNTRY: <span style="text-transform: capitalize;">{{ movie?.country }}</span></h4> -->
+                                                    <p class="content-movie"> {{ movie?.content }} </p>
+                                                </div>
+                                                <div class="snipcart-details top_brand_home_details">
+                                                    <form action="#" method="post">
 
-          <!-- pager -->
-          <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
-              <li [ngClass]="{disabled:pager.currentPage === 1}"  style="margin-right: 20px;">
-                  <a (click)="setPage(1)">First</a>
-              </li>
-              <li [ngClass]="{disabled:pager.currentPage === 1}"  style="margin-right: 20px;">
-                  <a (click)="setPage(pager.currentPage - 1)">Previous</a>
-              </li>
-              <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}"  style="margin-right: 20px;">
-                  <a (click)="setPage(page)">{{page}}</a>
-              </li>
-              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}"  style="margin-right: 20px;">
-                  <a (click)="setPage(pager.currentPage + 1)">Next</a>
-              </li>
-              <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}"  style="margin-right: 20px;">
-                  <a (click)="setPage(pager.totalPages)">Last</a>
-              </li>
-          </ul>
-      </div>
-  </div>
+                                                        <input type="submit" name="submit" value="VIEW MORE" class="button" />
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </figure>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+            </div>
+            <!-- items being paged -->
+            <!-- <div *ngFor="let item of pagedItems">{{item?.title}}</div> -->
+
+            <!-- pager -->
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                <li [ngClass]="{disabled:pager.currentPage === 1}" style="margin-right: 20px;">
+                    <a (click)="setPage(1)">First</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}" style="margin-right: 20px;">
+                    <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                </li>
+                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" style="margin-right: 20px;">
+                    <a (click)="setPage(page)">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" style="margin-right: 20px;">
+                    <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" style="margin-right: 20px;">
+                    <a (click)="setPage(pager.totalPages)">Last</a>
+                </li>
+            </ul>
+        <!-- </div> -->
+    <!-- </div> -->
 </div>

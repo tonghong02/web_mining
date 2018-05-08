@@ -90,6 +90,18 @@ export class DetailReviewComponent implements OnInit {
     return items;
   }
 
+  normalizeCategory(category: string) {
+    if (category === 'phim_co_trang') return 'Phim Cổ Trang';
+    else if (category === 'phim_hai') return 'Phim Hài';
+    else if (category === 'phim_hanh_dong') return 'Phim Hành Động';
+    else if (category === 'phim_kinh_di') return 'Phim Kinh Dị';
+    else if (category === 'phim_phieu_luu') return 'Phim Phiêu Lưu';
+    else if (category === 'phim_tai_lieu') return 'Phim Tài Liệu';
+    else if (category === 'phim_tam_ly') return 'Phim Tâm Lý';
+    else if (category === 'phim_tinh_cam') return 'Phim Tình Cảm';
+    else if (category === 'phim_vien_tuong') return 'Phim Viễn Tưởng';
+  }
+
   setRate(rate: number) {
     this.mesRate = '';
     this.reviewForm.controls['rate'].setValue(rate);
@@ -149,7 +161,6 @@ export class DetailReviewComponent implements OnInit {
   }
 
   review() {
-    console.log("REviewed!!!!!!!!!!!!!");
     if (this.reviewForm.get('rate').hasError('required')) {
       this.mesRate = 'Rate is required';
       this.isErr = true;

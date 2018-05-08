@@ -56,9 +56,9 @@
                         <div class="snipcart-item block">
                           <div class="snipcart-thumb">
                             <a href="/phim/{{movie._id}}">
-                              <img title=" " alt=" " src="assets/images/1.png" />
+                              <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
                             </a>
-                            <p>{{ movie?.title }}</p>
+                            <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%;">{{ movie?.title }}</h4>
                             <!-- <div class="stars">
                               <i class="fa fa-star blue-star" aria-hidden="true"></i>
                               <i class="fa fa-star blue-star" aria-hidden="true"></i>
@@ -66,10 +66,10 @@
                               <i class="fa fa-star blue-star" aria-hidden="true"></i>
                               <i class="fa fa-star gray-star" aria-hidden="true"></i>
                             </div> -->
-                            <h4> RATE: {{ movie?.rate }} </h4>
-                            <h4> IMDB: {{ movie?.imdb }}
-                            </h4>
-                            <p> {{ movie?.intro }} </p>
+                            <p> YEAR: {{ movie?.year }} </p>
+                            <!-- <h4> YEAR: {{ movie?.year }}</h4> -->
+                            <!-- <h4> COUNTRY: <span style="text-transform: capitalize;">{{ movie?.country }}</span></h4> -->
+                            <p class="content-movie"> {{ movie?.content }} </p>
                           </div>
                           <div class="snipcart-details top_brand_home_details">
                             <form action="#" method="post">

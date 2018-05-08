@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
-import { UserService } from '../../services/user.service';
+import { MovieService } from '../../services/movie.service';
 import { ContactModel } from '../../models/contact.model';
 import { PaginationService } from '../../services/pagination.service';
 import * as _ from 'underscore';
@@ -16,8 +16,9 @@ import * as _ from 'underscore';
 })
 export class PhimBoComponent implements OnInit {
 
-  contactForm: FormGroup;
   private allItems: any[];
+  category: string = '';
+  listMovies: any;
 
   // pager object
   pager: any = {};
@@ -25,20 +26,25 @@ export class PhimBoComponent implements OnInit {
   // paged items
   pagedItems: any[];
   constructor(
-    private _user: UserService,
+    private _movie: MovieService,
     private _router: Router,
-    private fb: FormBuilder,
-    private _toastr: ToastrService,
+    private _route: ActivatedRoute,
     private _pagination: PaginationService
-  ) { }
+  ) {
+    this._route.params.subscribe(params => {
+      this.category = params['category'];
+      console.log("category = " + this.category);
+      this.listContact();
+    });
+  }
 
   ngOnInit() {
-    this.listContact();
+    
   }
 
   listContact() {
-    this._user
-      .getListUser()
+    this._movie
+      .getListMovie(`?category=${this.category}`)
       .subscribe(data => {
         console.log(data);
         // set items to json response
@@ -59,6 +65,18 @@ export class PhimBoComponent implements OnInit {
 
     // get current page of items
     this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+
+  detailMovie(id: string){
+    this._router.navigateByUrl(`/phim/${id}`);
+  }
+
+  createRange(number) {
+    var items: number[] = [];
+    for (var i = 1; i <= number; i++) {
+      items.push(i);
+    }
+    return items;
   }
 
 

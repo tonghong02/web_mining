@@ -6,18 +6,18 @@ export class PaginationService {
 
   constructor() { }
 
-  getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10) {
+  getPager(totalItems: number, currentPage: number = 1, pageSize: number = 9) {
     // calculate total pages
     let totalPages = Math.ceil(totalItems / pageSize);
 
     let startPage: number, endPage: number;
-    if (totalPages <= 10) {
+    if (totalPages <= 8) {
         // less than 10 total pages so show all
         startPage = 1;
         endPage = totalPages;
     } else {
         // more than 10 total pages so calculate start and end pages
-        if (currentPage <= 6) {
+        if (currentPage <= 4) {
             startPage = 1;
             endPage = 10;
         } else if (currentPage + 4 >= totalPages) {

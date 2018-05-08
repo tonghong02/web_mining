@@ -60,16 +60,12 @@ const appRouter: Routes = [
         component: SearchComponent,
     },
     {
-        path: 'phimmoi',
-        component: PhimMoiComponent,
+        path: 'the_loai/:category',
+        component: PhimBoComponent,
     },
     {
         path: 'phimle',
         component: PhimLeComponent,
-    },
-    {
-        path: 'phimbo',
-        component: PhimBoComponent,
     },
     {
         path: 'phim/:id',
