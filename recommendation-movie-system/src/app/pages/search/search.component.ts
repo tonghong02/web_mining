@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit {
   constructor(private _movie: MovieService, private _route: ActivatedRoute, private _router: Router) {
     this._route.params.subscribe(params => {
       this.search = params['text'];
-      this._movie.searchMovie(`?title=${this.search}`).subscribe(data => {
+      this._movie.searchMovie(`?search=${this.search}`).subscribe(data => {
         this.listMovies = data;
       })
     });

@@ -1,4 +1,4 @@
-<div class="agileits_header">
+<!-- <div class="agileits_header">
   <div class="container">
     <div class="agile-login">
       <ul>
@@ -20,20 +20,38 @@
     </div>
     <div class="clearfix"> </div>
   </div>
-</div>
+</div> -->
 
 <!-- header -->
 <div class="logo_products">
   <div class="container">
 
-    <div class="w3ls_logo_products_left">
+    <div class="w3ls_logo_products_left" style="margin-left: -9%;">
       <h1>
-        <a href="/home">F5 TEAM</a>
+        <a href="/home" style="color: white;">F5 TEAM</a>
       </h1>
+    </div>
+    <div class="agile-login">
+      <ul>
+        <li *ngIf="!isLogin">
+          <a href="/signup"> Đăng kí </a>
+        </li>
+        <li *ngIf="!isLogin">
+          <a href="/login">Đăng nhập</a>
+        </li>
+        <li *ngIf="isLogin">
+          <a href="/profile">Hello
+            <b> {{ currentUser.username }} ! </b>
+          </a>
+        </li>
+        <li *ngIf="isLogin">
+          <a href="#" (click)="logout()">Đăng xuất</a>
+        </li>
+      </ul>
     </div>
     <div class="w3l_search">
       <form (ngSubmit)="searchMovie()">
-        <input id="search" type="text" name="Search" placeholder="Search for name movie..." required="" #search (keyup)="onKey(search.value)">
+        <input id="search" type="text" name="Search" placeholder="Search for name, year, country movie..." required="" #search (keyup)="onKey(search.value)">
         <button type="submit" class="btn btn-default search" aria-label="Left Align">
           <i class="fa fa-search" aria-hidden="true"> </i>
         </button>
@@ -48,7 +66,7 @@
 <!-- //header -->
 <!-- navigation -->
 <div class="navigation-agileits">
-  <div class="container">
+  <div class="container" style="margin-left: 4%;">
     <nav class="navbar navbar-default">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header nav_2">
@@ -62,7 +80,7 @@
       <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
         <ul class="nav navbar-nav" style="display: inline;">
           <li class="active">
-            <a href="/home" class="act">HOME</a>
+            <a href="/home" class="act">TRANG CHỦ</a>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">THỂ LOẠI
@@ -106,10 +124,10 @@
             </ul>
           </li>
           <li>
-            <a routerLink="/phimle">LỊCH SỬ XEM PHIM</a>
+            <a routerLink="/history">LỊCH SỬ XEM PHIM</a>
           </li>
           <li>
-            <a routerLink="/top-imdb">TOP IMDB 2017</a>
+            <a routerLink="/top-imdb">TOP IMDB</a>
           </li>
           <li *ngIf="isLogin">
             <a routerLink="/review">ĐÁNH GIÁ</a>

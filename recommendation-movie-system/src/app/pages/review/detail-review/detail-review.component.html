@@ -39,7 +39,7 @@
               <p *ngIf="movie?.imdb"><span class="text-bold">IMDB:</span> {{ movie?.imdb }}</p>
               <p *ngIf="movie?.rate"><span class="text-bold">RATE:</span> {{ movie?.rate }}</p>
               <p><span class="text-bold">YEAR:</span> {{ movie?.year }}</p>
-              <p><span class="text-bold">CATEGORY:</span> {{normalizeCategory(movie?.category)}}</p>
+              <p><span class="text-bold">CATEGORY:</span> {{showCategory(movie?.category)}}</p>
               <p style="text-transform: capitalize;"><span class="text-bold">COUNTRY:</span> {{ movie?.country }}</p>
             </div>
             <div *ngIf="isLogin" class="form-group" id="comment">

@@ -19,7 +19,7 @@ import { UserModel } from '../../../models/user.model'
   styleUrls: ['./detail-review.component.css']
 })
 export class DetailReviewComponent implements OnInit {
-  id: string = '';
+  engTitle: string = '';
   movie: MovieModel;
   isLogin: boolean = false;
   currentUser: UserModel;
@@ -38,12 +38,24 @@ export class DetailReviewComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private _toastr: ToastrService, private _movie: MovieService, private _route: ActivatedRoute, private _authentication: AuthenticationService, private _review: ReviewService, private _history: HistoryService) {
     this._route.params.subscribe(params => {
-      this.id = params['id'];
-      this._movie.detailMovie(this.id).subscribe(data => {
-        this.movie = data;
+      this.engTitle = this.normalizeTitle(params['engTitle']);
+      console.log("name english: " + this.engTitle);
+      let category: string = '';
+      this._movie.detailMovie(this.engTitle).subscribe(data => {
+        this.movie = data[0];
+        for(let i = 0; i < data.length; i++){
+          if(i === data.length -1){
+            category += data[i].category; 
+          } else{
+            category += data[i].category + ','
+          }
+        }
+        this.movie.category = category;
+      console.log("category.... : " + category);
+      
         console.log("detail movie");
         console.log(this.movie);
-      })
+      });
     });
 
     if (this._authentication.getToken()) {
@@ -56,22 +68,22 @@ export class DetailReviewComponent implements OnInit {
         // add movie into history
         let body = {
           user: this.idUser,
-          movie: this.id
+          movie: this.engTitle
         }
         console.log("body")
         console.log(body)
-        this._history.createHistory(body).subscribe(data => {
-          console.log("create history");
-          console.log(data);
-        }, err => {
-          console.log(err);
-        })
+        // this._history.createHistory(body).subscribe(data => {
+        //   console.log("create history");
+        //   console.log(data);
+        // }, err => {
+        //   console.log(err);
+        // })
       }
     }
     console.log(this.currentUser)
     this.reviewForm = this.fb.group({
       user: [!this.currentUser ? null : this.currentUser._id, Validators.required],
-      movie: [this.id, Validators.required],
+      movie: [this.engTitle, Validators.required],
       rate: [null, Validators.required],
       content: ['', Validators.required]
     })
@@ -80,6 +92,7 @@ export class DetailReviewComponent implements OnInit {
 
   ngOnInit() {
     this.getListReview();
+    console.log(this.showCategory("phim_co_trang,phim_tinh_cam"));
   }
 
   createRange(number) {
@@ -100,6 +113,16 @@ export class DetailReviewComponent implements OnInit {
     else if (category === 'phim_tam_ly') return 'Phim Tâm Lý';
     else if (category === 'phim_tinh_cam') return 'Phim Tình Cảm';
     else if (category === 'phim_vien_tuong') return 'Phim Viễn Tưởng';
+  }
+
+  showCategory(category: string){
+    let arr = category.split(",");
+    let result: String = '';
+
+    for(let i = 0; i < arr.length; i++){
+      result += this.normalizeCategory(arr[i]) + ", ";
+    }
+    return result;
   }
 
   setRate(rate: number) {
@@ -150,14 +173,19 @@ export class DetailReviewComponent implements OnInit {
   }
 
   getListReview() {
-    this._review.listReview(`?movie=${this.id}`).subscribe(data => {
-      this.listReviews = data;
-      console.log("list reviews!!!!")
-      console.log(this.listReviews);
+    // this._review.listReview(`?movie=${this.id}`).subscribe(data => {
+    //   this.listReviews = data;
+    //   console.log("list reviews!!!!")
+    //   console.log(this.listReviews);
 
-    }, err => {
-      console.log(err)
-    })
+    // }, err => {
+    //   console.log(err)
+    // })
+  }
+
+  normalizeTitle(title: string){
+    let arr = title.split("_");
+    return arr.join(' ');
   }
 
   review() {
@@ -171,108 +199,108 @@ export class DetailReviewComponent implements OnInit {
     }
     console.log(this.isErr);
 
-    if (this.isErr === false) {
-      this._review.findUserMovie(this.idUser, this.id).subscribe(data => {
-        //if user not review
-        if (data.err) {
-          this._review.createReview(this.reviewForm.value).subscribe(data => {
-            this.reviewForm.controls['content'].patchValue('');
-            this.setRate(0);
-            this._review.listReview(`?movie=${this.id}`).subscribe(data => {
-              this.listReviews = data;
-              console.log("list reviews!!!!")
-              console.log(this.listReviews);
-              // update rate of movie just have reviewed
-              let rate = 0;
-              let sumReviewThisMovie = this.listReviews.length;
-              console.log("length = " + sumReviewThisMovie);
-              for (let result of this.listReviews) {
-                console.log(result.rate);
-                rate += result.rate;
-              };
-              console.log("rate = " + rate);
-              let movieUpdate = {
-                title: this.movie.title,
-                year: this.movie.year,
-                imdb: this.movie.imdb,
-                type: this.movie.type,
-                view: this.movie.view,
-                intro: this.movie.intro,
-                rate: _.ceil(rate / sumReviewThisMovie, 2),
-                country: this.movie.country,
-                category: this.movie.category
-              }
-              console.log("movie update");
-              console.log(movieUpdate);
-              // after create review -> excute again value rate of this movie
-              this._movie.updateMovie(this.id, movieUpdate).subscribe(data => {
-                if (!data.err) {
-                  console.log("UPDATE RATE SUCCESS!");
-                }
-                else {
-                  console.log("update movie fail")
-                }
-              })
-              this._toastr.success('Review success!', 'Success!');
-              // console.log(data);
-            })
-          })
-        }
-        else {
-          // console.log(data)
-          // console.log(data._id );
-          this._review.updateReview(data._id, this.reviewForm.value).subscribe(review => {
-            if (!review.err) {
-              this.reviewForm.controls['content'].patchValue('');
-              this.setRate(0);
-              this._review.listReview(`?movie=${this.id}`).subscribe(data => {
-                this.listReviews = data;
-                console.log("list reviews!!!!")
-                console.log(this.listReviews);
-                // update rate of movie just have reviewed
-                let rate = 0;
-                let sumReviewThisMovie = this.listReviews.length;
-                console.log("length = " + sumReviewThisMovie);
-                for (let result of this.listReviews) {
-                  console.log(result.rate);
-                  rate += result.rate;
-                };
-                console.log("rate = " + rate);
-                let movieUpdate = {
-                  title: this.movie.title,
-                  year: this.movie.year,
-                  imdb: this.movie.imdb,
-                  type: this.movie.type,
-                  view: this.movie.view,
-                  intro: this.movie.intro,
-                  rate: _.ceil(rate / sumReviewThisMovie, 2),
-                  country: this.movie.country,
-                  category: this.movie.category
-                }
-                console.log("movie update");
-                console.log(movieUpdate);
-                // after create review -> excute again value rate of this movie
-                this._movie.updateMovie(this.id, movieUpdate).subscribe(data => {
-                  if (!data.err) {
-                    console.log("UPDATE RATE SUCCESS!");
-                  }
-                  else {
-                    console.log(data.err)
-                  }
-                })
-                // console.log(data);
+    // if (this.isErr === false) {
+    //   this._review.findUserMovie(this.idUser, this.id).subscribe(data => {
+    //     //if user not review
+    //     if (data.err) {
+    //       this._review.createReview(this.reviewForm.value).subscribe(data => {
+    //         this.reviewForm.controls['content'].patchValue('');
+    //         this.setRate(0);
+    //         this._review.listReview(`?movie=${this.id}`).subscribe(data => {
+    //           this.listReviews = data;
+    //           console.log("list reviews!!!!")
+    //           console.log(this.listReviews);
+    //           // update rate of movie just have reviewed
+    //           let rate = 0;
+    //           let sumReviewThisMovie = this.listReviews.length;
+    //           console.log("length = " + sumReviewThisMovie);
+    //           for (let result of this.listReviews) {
+    //             console.log(result.rate);
+    //             rate += result.rate;
+    //           };
+    //           console.log("rate = " + rate);
+    //           let movieUpdate = {
+    //             title: this.movie.title,
+    //             year: this.movie.year,
+    //             imdb: this.movie.imdb,
+    //             type: this.movie.type,
+    //             view: this.movie.view,
+    //             intro: this.movie.intro,
+    //             rate: _.ceil(rate / sumReviewThisMovie, 2),
+    //             country: this.movie.country,
+    //             category: this.movie.category
+    //           }
+    //           console.log("movie update");
+    //           console.log(movieUpdate);
+    //           // after create review -> excute again value rate of this movie
+    //           this._movie.updateMovie(this.id, movieUpdate).subscribe(data => {
+    //             if (!data.err) {
+    //               console.log("UPDATE RATE SUCCESS!");
+    //             }
+    //             else {
+    //               console.log("update movie fail")
+    //             }
+    //           })
+    //           this._toastr.success('Review success!', 'Success!');
+    //           // console.log(data);
+    //         })
+    //       })
+    //     }
+    //     else {
+    //       // console.log(data)
+    //       // console.log(data._id );
+    //       this._review.updateReview(data._id, this.reviewForm.value).subscribe(review => {
+    //         if (!review.err) {
+    //           this.reviewForm.controls['content'].patchValue('');
+    //           this.setRate(0);
+    //           this._review.listReview(`?movie=${this.id}`).subscribe(data => {
+    //             this.listReviews = data;
+    //             console.log("list reviews!!!!")
+    //             console.log(this.listReviews);
+    //             // update rate of movie just have reviewed
+    //             let rate = 0;
+    //             let sumReviewThisMovie = this.listReviews.length;
+    //             console.log("length = " + sumReviewThisMovie);
+    //             for (let result of this.listReviews) {
+    //               console.log(result.rate);
+    //               rate += result.rate;
+    //             };
+    //             console.log("rate = " + rate);
+    //             let movieUpdate = {
+    //               title: this.movie.title,
+    //               year: this.movie.year,
+    //               imdb: this.movie.imdb,
+    //               type: this.movie.type,
+    //               view: this.movie.view,
+    //               intro: this.movie.intro,
+    //               rate: _.ceil(rate / sumReviewThisMovie, 2),
+    //               country: this.movie.country,
+    //               category: this.movie.category
+    //             }
+    //             console.log("movie update");
+    //             console.log(movieUpdate);
+    //             // after create review -> excute again value rate of this movie
+    //             this._movie.updateMovie(this.id, movieUpdate).subscribe(data => {
+    //               if (!data.err) {
+    //                 console.log("UPDATE RATE SUCCESS!");
+    //               }
+    //               else {
+    //                 console.log(data.err)
+    //               }
+    //             })
+    //             // console.log(data);
 
-              })
-              this._toastr.success('Update review success!', 'Success!');
-            }
-            else {
-              this._toastr.error(data.err, 'Error!');
-            }
-          })
-        }
-      }, err => {
-        console.log(err)
-      })
-    }
+    //           })
+    //           this._toastr.success('Update review success!', 'Success!');
+    //         }
+    //         else {
+    //           this._toastr.error(data.err, 'Error!');
+    //         }
+    //       })
+    //     }
+    //   }, err => {
+    //     console.log(err)
+    //   })
+    // }
   }
 }

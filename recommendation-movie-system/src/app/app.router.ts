@@ -26,10 +26,8 @@ const appRouter: Routes = [
                 path: '',
                 component: LoginComponent,
             },
-
         ]
     },
-
     {
         path: 'template',
         component: TemplateComponent,
@@ -64,11 +62,11 @@ const appRouter: Routes = [
         component: PhimBoComponent,
     },
     {
-        path: 'phimle',
+        path: 'history',
         component: PhimLeComponent,
     },
     {
-        path: 'phim/:id',
+        path: 'phim/:engTitle',
         component: DetailReviewComponent,
     },
     {
@@ -96,7 +94,7 @@ const appRouter: Routes = [
                 component: ReviewComponent,
             },
             // {
-            //     path: 'review/:id',
+            //     path: 'review/:engTitle',
             //     component: DetailReviewComponent,
             // },
         ]

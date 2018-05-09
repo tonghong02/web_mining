@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 
 import { MovieService } from '../../services/movie.service';
-import { ContactModel } from '../../models/contact.model';
 import { PaginationService } from '../../services/pagination.service';
 import * as _ from 'underscore';
 
@@ -67,8 +65,26 @@ export class PhimBoComponent implements OnInit {
     this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 
-  detailMovie(id: string){
-    this._router.navigateByUrl(`/phim/${id}`);
+  detailMovie(title: string) {
+    let engTitle = this.normalizeTitle(title);
+    this._router.navigateByUrl(`/phim/${engTitle}`);
+  }
+
+  normalizeCategory(category: string) {
+    if (category === 'phim_co_trang') return 'Phim Cổ Trang';
+    else if (category === 'phim_hai') return 'Phim Hài';
+    else if (category === 'phim_hanh_dong') return 'Phim Hành Động';
+    else if (category === 'phim_kinh_di') return 'Phim Kinh Dị';
+    else if (category === 'phim_phieu_luu') return 'Phim Phiêu Lưu';
+    else if (category === 'phim_tai_lieu') return 'Phim Tài Liệu';
+    else if (category === 'phim_tam_ly') return 'Phim Tâm Lý';
+    else if (category === 'phim_tinh_cam') return 'Phim Tình Cảm';
+    else if (category === 'phim_vien_tuong') return 'Phim Viễn Tưởng';
+  }
+
+  normalizeTitle(title: string){
+    let arr = title.split(" ");
+    return arr.join('_');
   }
 
   createRange(number) {

@@ -23,12 +23,16 @@ export class MovieService {
     return this._apiRequest.get(`/movie${query}`);
   }
 
+  topIMDB(){
+    return this._apiRequest.get(`/movie/top_imdb`)
+  }
+
   searchMovie(query: string){
     return this._apiRequest.get(`/movie/search${query}`);
   }
 
-  detailMovie(id: string): Observable<MovieModel> {
-    return this._apiRequest.get(`/movie/${id}`)
+  detailMovie(title: string): Observable<MovieModel[]> {
+    return this._apiRequest.get(`/movie/${title}`)
   }
 
   updateMovie(id: string, body: any){
