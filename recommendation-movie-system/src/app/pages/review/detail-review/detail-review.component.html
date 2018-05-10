@@ -31,8 +31,9 @@
           </div>
           <div class="w3agile_description">
             <h4 class="text-bold">Description :</h4>
-            <div style="text-align:justify;">{{ movie?.content }}</div>
-            <p><a [href]="'http://www.' + movie?.linkWatch" target="_blank">Xem phim</a></p>
+            <div style="text-align:justify;">{{ movie?.content }}</div><br>
+            <p ><a [href]="'http://www.' + movie?.linkWatch" target="_blank" (click)="watchMovie()">Xem phim</a></p>
+            <!-- <button class="btn" style="background: #fe9126;" (click)="watchMovie()"><a style="color: white;" [href]="'http://www.' + movie?.linkWatch" target="_blank">Xem phim</a></button> -->
           </div>
           <div class="snipcart-item block">
             <div class="snipcart-thumb agileinfo_single_right_snipcart">

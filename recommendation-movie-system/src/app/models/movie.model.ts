@@ -1,12 +1,17 @@
 export class MovieModel {
     _id: string;
     title: string;
-    year: number;
-    imdb: number;
+    year: string;
+    imdb: string;
     type: string;
     view: number;
-    intro: string;
+    content: string;
     category: string;
     country: string;
-    rate: number;
+    rate: string;
+    engTitle: string;
+    linkPhim: string;
+    linkBackgrounds: string;
+    linkWatch: string;
+  
 }

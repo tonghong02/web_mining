@@ -18,6 +18,7 @@ export class SearchComponent implements OnInit {
       this.search = params['text'];
       this._movie.searchMovie(`?search=${this.search}`).subscribe(data => {
         this.listMovies = data;
+        console.log("searchhhh")
       })
     });
   }

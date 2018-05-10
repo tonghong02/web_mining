@@ -37,7 +37,7 @@ export class PhimBoComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    console.log(this.normalizeTitle("how to do (sesion 3)"));
   }
 
   listContact() {
@@ -84,7 +84,8 @@ export class PhimBoComponent implements OnInit {
 
   normalizeTitle(title: string){
     let arr = title.split(" ");
-    return arr.join('_');
+    let url = arr.join('_');
+    return url.replace('(', '-').replace(')','-');
   }
 
   createRange(number) {

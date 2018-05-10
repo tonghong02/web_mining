@@ -36,23 +36,23 @@ export class DetailReviewComponent implements OnInit {
   src4: string = 'assets/images/star.png';
   src5: string = 'assets/images/star.png';
 
-  constructor(private fb: FormBuilder, private _toastr: ToastrService, private _movie: MovieService, private _route: ActivatedRoute, private _authentication: AuthenticationService, private _review: ReviewService, private _history: HistoryService) {
+  constructor(private fb: FormBuilder, private _toastr: ToastrService, private _movie: MovieService, private _route: ActivatedRoute, private _router: Router, private _authentication: AuthenticationService, private _review: ReviewService, private _history: HistoryService) {
     this._route.params.subscribe(params => {
       this.engTitle = this.normalizeTitle(params['engTitle']);
       console.log("name english: " + this.engTitle);
       let category: string = '';
       this._movie.detailMovie(this.engTitle).subscribe(data => {
         this.movie = data[0];
-        for(let i = 0; i < data.length; i++){
-          if(i === data.length -1){
-            category += data[i].category; 
-          } else{
+        for (let i = 0; i < data.length; i++) {
+          if (i === data.length - 1) {
+            category += data[i].category;
+          } else {
             category += data[i].category + ','
           }
         }
         this.movie.category = category;
-      console.log("category.... : " + category);
-      
+        console.log("category.... : " + category);
+
         console.log("detail movie");
         console.log(this.movie);
       });
@@ -83,6 +83,7 @@ export class DetailReviewComponent implements OnInit {
     console.log(this.currentUser)
     this.reviewForm = this.fb.group({
       user: [!this.currentUser ? null : this.currentUser._id, Validators.required],
+      idMovie: [null, Validators.required],
       movie: [this.engTitle, Validators.required],
       rate: [null, Validators.required],
       content: ['', Validators.required]
@@ -92,7 +93,9 @@ export class DetailReviewComponent implements OnInit {
 
   ngOnInit() {
     this.getListReview();
-    console.log(this.showCategory("phim_co_trang,phim_tinh_cam"));
+    // this.reviewForm.controls['idMovie'].setValue(this.movie._id);
+    // console.log(this.normalizeTitle("how_to_do_-sesion_3-"));
+    // console.log(this.showCategory("phim_phieu_luu,phim_tinh_cam,phim_vien_tuong"));
   }
 
   createRange(number) {
@@ -115,11 +118,11 @@ export class DetailReviewComponent implements OnInit {
     else if (category === 'phim_vien_tuong') return 'Phim Viễn Tưởng';
   }
 
-  showCategory(category: string){
+  showCategory(category: string) {
     let arr = category.split(",");
     let result: String = '';
 
-    for(let i = 0; i < arr.length; i++){
+    for (let i = 0; i < arr.length; i++) {
       result += this.normalizeCategory(arr[i]) + ", ";
     }
     return result;
@@ -172,23 +175,30 @@ export class DetailReviewComponent implements OnInit {
     }
   }
 
-  getListReview() {
-    // this._review.listReview(`?movie=${this.id}`).subscribe(data => {
-    //   this.listReviews = data;
-    //   console.log("list reviews!!!!")
-    //   console.log(this.listReviews);
-
-    // }, err => {
-    //   console.log(err)
-    // })
+  watchMovie() {
+    let i = 1;
+    console.log(i++);
   }
 
-  normalizeTitle(title: string){
+  getListReview() {
+    this._review.listReview(`?movie=${this.engTitle}`).subscribe(data => {
+      this.listReviews = data;
+      console.log("list reviews!!!!")
+      console.log(this.listReviews);
+
+    }, err => {
+      console.log(err)
+    })
+  }
+
+  normalizeTitle(title: string) {
+    title = title.replace("-", "(").replace("-", ")");
     let arr = title.split("_");
     return arr.join(' ');
   }
 
   review() {
+    this.reviewForm.controls['idMovie'].setValue(this.movie._id);
     if (this.reviewForm.get('rate').hasError('required')) {
       this.mesRate = 'Rate is required';
       this.isErr = true;
@@ -197,7 +207,54 @@ export class DetailReviewComponent implements OnInit {
       this.mesContent = 'Content is required';
       this.isErr = true;
     }
-    console.log(this.isErr);
+    console.log("err: " + this.isErr);
+
+    if (this.isErr === false) {
+      this._review.createReview(this.reviewForm.value).subscribe(data => {
+        this.reviewForm.controls['content'].patchValue('');
+        this.setRate(0);
+        this.getListReview();
+        // this._review.listReview(`?movie=${this.id}`).subscribe(data => {
+        //   this.listReviews = data;
+        //   console.log("list reviews!!!!")
+        //   console.log(this.listReviews);
+        //   let rate = 0;
+        //   let sumReviewThisMovie = this.listReviews.length;
+        //   console.log("length = " + sumReviewThisMovie);
+        //   for (let result of this.listReviews) {
+        //     console.log(result.rate);
+        //     rate += result.rate;
+        //   };
+        //   console.log("rate = " + rate);
+        //   let movieUpdate = {
+        //     title: this.movie.title,
+        //     year: this.movie.year,
+        //     imdb: this.movie.imdb,
+        //     type: this.movie.type,
+        //     view: this.movie.view,
+        //     intro: this.movie.intro,
+        //     rate: _.ceil(rate / sumReviewThisMovie, 2),
+        //     country: this.movie.country,
+        //     category: this.movie.category
+        //   }
+        //   console.log("movie update");
+        //   console.log(movieUpdate);
+        //   this._movie.updateMovie(this.id, movieUpdate).subscribe(data => {
+        //     if (!data.err) {
+        //       console.log("UPDATE RATE SUCCESS!");
+        //     }
+        //     else {
+        //       console.log("update movie fail")
+        //     }
+        //   })
+        //   this._toastr.success('Review success!', 'Success!');
+        //   // console.log(data);
+        // })
+      }, err => {
+        console.log(err)
+      })
+    }
+
 
     // if (this.isErr === false) {
     //   this._review.findUserMovie(this.idUser, this.id).subscribe(data => {

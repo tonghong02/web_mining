@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
 
   }
 
-  normalizeTitlee(title: string){
+  normalizeTitlee(title: string) {
     let arr = title.split("_");
     return arr.join(' ');
   }
@@ -49,9 +49,9 @@ export class HomeComponent implements OnInit {
     else if (category === 'phim_vien_tuong') return 'Phim Viễn Tưởng';
   }
 
-  normalizeTitle(title: string){
+  normalizeTitle(title: string) {
     let arr = title.split(" ");
-    return arr.join('_');
+    let url = arr.join('_');
+    return url.replace('(', '-').replace(')', '-');
   }
-
 }
