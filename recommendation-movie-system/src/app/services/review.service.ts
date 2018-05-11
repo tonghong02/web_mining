@@ -28,8 +28,8 @@ export class ReviewService {
     return this._apiHeader.put(`/review/${id}`, body);
   }
 
-  findUserMovie(idUser: string, idMovie: string): any{
-    return this._apiRequest.get(`/review/find/${idUser}/${idMovie}`)
+  findUserMovie(idUser: string, titleMovie: string): any{
+    return this._apiRequest.get(`/review/find/${idUser}/${titleMovie}`)
   }
 
 }

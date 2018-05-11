@@ -65,19 +65,8 @@ export class DetailReviewComponent implements OnInit {
         this.idUser = this.currentUser._id;
         console.log("current user")
         console.log(this.currentUser);
-        // add movie into history
-        let body = {
-          user: this.idUser,
-          movie: this.engTitle
-        }
-        console.log("body")
-        console.log(body)
-        // this._history.createHistory(body).subscribe(data => {
-        //   console.log("create history");
-        //   console.log(data);
-        // }, err => {
-        //   console.log(err);
-        // })
+
+
       }
     }
     console.log(this.currentUser)
@@ -176,8 +165,61 @@ export class DetailReviewComponent implements OnInit {
   }
 
   watchMovie() {
-    let i = 1;
-    console.log(i++);
+    // add movie into history
+    let body = {
+      user: this.idUser,
+      movie: this.movie._id,
+      titleMovie: this.engTitle
+    }
+    console.log("body")
+    console.log(body)
+    this._review.findUserMovie(this.idUser, this.engTitle).subscribe(data => {
+      if (!data) {
+        this._history.createHistory(body).subscribe(data => {
+          console.log("create history");
+          console.log(data);
+        }, err => {
+
+          console.log(err);
+        })
+      }
+    })
+
+    // increase view of movie
+    this._movie.detailMovie(this.engTitle).subscribe(data => {
+      if (data.length !== 0) {
+        for (let i = 0; i < data.length; i++) {
+          // update view for movie
+          let movieUpdate = {
+            title: this.movie.title,
+            year: this.movie.year,
+            imdb: this.movie.imdb,
+            engTitle: this.engTitle,
+            view: (typeof data[i].view != 'number') ? + data[i].view + 1 : data[i].view + 1,
+            content: this.movie.content,
+            rate: this.movie.rate,
+            country: this.movie.country,
+            category: data[i].category,
+            linkWatch: this.movie.linkWatch,
+            linkBackgrounds: this.movie.linkBackgrounds,
+            linkPhim: this.movie.linkPhim,
+          }
+          console.log("movie update");
+          console.log(movieUpdate);
+          this._movie.updateMovie(data[i]._id, movieUpdate).subscribe(data => {
+            if (!data.err) {
+              console.log("UPDATE VIEW SUCCESS!");
+            }
+            else {
+              console.log("update movie fail")
+            }
+          })
+        }
+      }
+    }, err => {
+      console.log(err)
+    })
+
   }
 
   getListReview() {
@@ -210,154 +252,135 @@ export class DetailReviewComponent implements OnInit {
     console.log("err: " + this.isErr);
 
     if (this.isErr === false) {
-      this._review.createReview(this.reviewForm.value).subscribe(data => {
-        this.reviewForm.controls['content'].patchValue('');
-        this.setRate(0);
-        this.getListReview();
-        // this._review.listReview(`?movie=${this.id}`).subscribe(data => {
-        //   this.listReviews = data;
-        //   console.log("list reviews!!!!")
-        //   console.log(this.listReviews);
-        //   let rate = 0;
-        //   let sumReviewThisMovie = this.listReviews.length;
-        //   console.log("length = " + sumReviewThisMovie);
-        //   for (let result of this.listReviews) {
-        //     console.log(result.rate);
-        //     rate += result.rate;
-        //   };
-        //   console.log("rate = " + rate);
-        //   let movieUpdate = {
-        //     title: this.movie.title,
-        //     year: this.movie.year,
-        //     imdb: this.movie.imdb,
-        //     type: this.movie.type,
-        //     view: this.movie.view,
-        //     intro: this.movie.intro,
-        //     rate: _.ceil(rate / sumReviewThisMovie, 2),
-        //     country: this.movie.country,
-        //     category: this.movie.category
-        //   }
-        //   console.log("movie update");
-        //   console.log(movieUpdate);
-        //   this._movie.updateMovie(this.id, movieUpdate).subscribe(data => {
-        //     if (!data.err) {
-        //       console.log("UPDATE RATE SUCCESS!");
-        //     }
-        //     else {
-        //       console.log("update movie fail")
-        //     }
-        //   })
-        //   this._toastr.success('Review success!', 'Success!');
-        //   // console.log(data);
-        // })
+      this._review.findUserMovie(this.idUser, this.engTitle).subscribe(data => {
+        //if not review
+        if (!data) {
+          this._review.createReview(this.reviewForm.value).subscribe(data => {
+            console.log("created review successfully!!!")
+            this.reviewForm.controls['content'].patchValue('');
+            this.setRate(0);
+
+            this._review.listReview(`?movie=${this.engTitle}`).subscribe(data => {
+              this.listReviews = data;
+              console.log("list reviews!!!!")
+              console.log(this.listReviews);
+              // calculate rate of movie
+              let rate = 0;
+              let sumReviewThisMovie = this.listReviews.length;
+              console.log("length = " + sumReviewThisMovie);
+              for (let result of this.listReviews) {
+                console.log(result.rate);
+                rate += result.rate;
+              };
+              console.log("rate = " + rate);
+
+              this._movie.detailMovie(this.engTitle).subscribe(data => {
+                //if have move -> update movie
+                if (data.length !== 0) {
+                  for (let i = 0; i < data.length; i++) {
+                    // update rate for movie
+                    let movieUpdate = {
+                      title: this.movie.title,
+                      year: this.movie.year,
+                      imdb: this.movie.imdb,
+                      engTitle: this.engTitle,
+                      view: this.movie.view,
+                      content: this.movie.content,
+                      rate: _.ceil(rate / sumReviewThisMovie, 2),
+                      country: this.movie.country,
+                      category: data[i].category,
+                      linkWatch: this.movie.linkWatch,
+                      linkBackgrounds: this.movie.linkBackgrounds,
+                      linkPhim: this.movie.linkPhim,
+                    }
+                    console.log("movie update");
+                    console.log(movieUpdate);
+                    this._movie.updateMovie(data[i]._id, movieUpdate).subscribe(data => {
+                      if (!data.err) {
+                        console.log("UPDATE RATE SUCCESS!");
+                        this._toastr.success('Create review success!', 'Success!');
+                      }
+                      else {
+                        console.log("update movie fail")
+                      }
+                    })
+                  }
+                }
+              }, err => {
+                console.log(err)
+              })
+            }, err => {
+              console.log(err)
+            })
+
+          })
+        } else {
+          // update review
+          this._review.updateReview(data._id, this.reviewForm.value).subscribe(data => {
+            console.log("update review successfully!!!")
+            this.reviewForm.controls['content'].patchValue('');
+            this.setRate(0);
+
+            this._review.listReview(`?movie=${this.engTitle}`).subscribe(data => {
+              this.listReviews = data;
+              console.log("list reviews!!!!")
+              console.log(this.listReviews);
+              // calculate rate of movie
+              let rate = 0;
+              let sumReviewThisMovie = this.listReviews.length;
+              console.log("length = " + sumReviewThisMovie);
+              for (let result of this.listReviews) {
+                console.log(result.rate);
+                rate += result.rate;
+              };
+              console.log("rate = " + rate);
+
+              this._movie.detailMovie(this.engTitle).subscribe(data => {
+                //if have move -> update movie
+                if (data.length !== 0) {
+                  for (let i = 0; i < data.length; i++) {
+                    console.log("category movie");
+                    console.log(data[i].category);
+                    // update rate for movie
+                    let movieUpdate = {
+                      title: this.movie.title,
+                      year: this.movie.year,
+                      imdb: this.movie.imdb,
+                      engTitle: this.engTitle,
+                      view: this.movie.view,
+                      content: this.movie.content,
+                      rate: _.ceil(rate / sumReviewThisMovie, 2),
+                      country: this.movie.country,
+                      category: data[i].category,
+                      linkWatch: this.movie.linkWatch,
+                      linkBackgrounds: this.movie.linkBackgrounds,
+                      linkPhim: this.movie.linkPhim,
+                    }
+                    console.log("movie update");
+                    console.log(movieUpdate);
+                    this._movie.updateMovie(data[i]._id, movieUpdate).subscribe(data => {
+                      if (!data.err) {
+                        console.log("UPDATE RATE SUCCESS!");
+                        this._toastr.success('Update review success!', 'Success!');
+                      }
+                      else {
+                        console.log("update movie fail")
+                      }
+                    })
+                  }
+                }
+              }, err => {
+                console.log(err)
+              })
+            }, err => {
+              console.log(err)
+            })
+
+          })
+        }
       }, err => {
         console.log(err)
       })
     }
-
-
-    // if (this.isErr === false) {
-    //   this._review.findUserMovie(this.idUser, this.id).subscribe(data => {
-    //     //if user not review
-    //     if (data.err) {
-    //       this._review.createReview(this.reviewForm.value).subscribe(data => {
-    //         this.reviewForm.controls['content'].patchValue('');
-    //         this.setRate(0);
-    //         this._review.listReview(`?movie=${this.id}`).subscribe(data => {
-    //           this.listReviews = data;
-    //           console.log("list reviews!!!!")
-    //           console.log(this.listReviews);
-    //           // update rate of movie just have reviewed
-    //           let rate = 0;
-    //           let sumReviewThisMovie = this.listReviews.length;
-    //           console.log("length = " + sumReviewThisMovie);
-    //           for (let result of this.listReviews) {
-    //             console.log(result.rate);
-    //             rate += result.rate;
-    //           };
-    //           console.log("rate = " + rate);
-    //           let movieUpdate = {
-    //             title: this.movie.title,
-    //             year: this.movie.year,
-    //             imdb: this.movie.imdb,
-    //             type: this.movie.type,
-    //             view: this.movie.view,
-    //             intro: this.movie.intro,
-    //             rate: _.ceil(rate / sumReviewThisMovie, 2),
-    //             country: this.movie.country,
-    //             category: this.movie.category
-    //           }
-    //           console.log("movie update");
-    //           console.log(movieUpdate);
-    //           // after create review -> excute again value rate of this movie
-    //           this._movie.updateMovie(this.id, movieUpdate).subscribe(data => {
-    //             if (!data.err) {
-    //               console.log("UPDATE RATE SUCCESS!");
-    //             }
-    //             else {
-    //               console.log("update movie fail")
-    //             }
-    //           })
-    //           this._toastr.success('Review success!', 'Success!');
-    //           // console.log(data);
-    //         })
-    //       })
-    //     }
-    //     else {
-    //       // console.log(data)
-    //       // console.log(data._id );
-    //       this._review.updateReview(data._id, this.reviewForm.value).subscribe(review => {
-    //         if (!review.err) {
-    //           this.reviewForm.controls['content'].patchValue('');
-    //           this.setRate(0);
-    //           this._review.listReview(`?movie=${this.id}`).subscribe(data => {
-    //             this.listReviews = data;
-    //             console.log("list reviews!!!!")
-    //             console.log(this.listReviews);
-    //             // update rate of movie just have reviewed
-    //             let rate = 0;
-    //             let sumReviewThisMovie = this.listReviews.length;
-    //             console.log("length = " + sumReviewThisMovie);
-    //             for (let result of this.listReviews) {
-    //               console.log(result.rate);
-    //               rate += result.rate;
-    //             };
-    //             console.log("rate = " + rate);
-    //             let movieUpdate = {
-    //               title: this.movie.title,
-    //               year: this.movie.year,
-    //               imdb: this.movie.imdb,
-    //               type: this.movie.type,
-    //               view: this.movie.view,
-    //               intro: this.movie.intro,
-    //               rate: _.ceil(rate / sumReviewThisMovie, 2),
-    //               country: this.movie.country,
-    //               category: this.movie.category
-    //             }
-    //             console.log("movie update");
-    //             console.log(movieUpdate);
-    //             // after create review -> excute again value rate of this movie
-    //             this._movie.updateMovie(this.id, movieUpdate).subscribe(data => {
-    //               if (!data.err) {
-    //                 console.log("UPDATE RATE SUCCESS!");
-    //               }
-    //               else {
-    //                 console.log(data.err)
-    //               }
-    //             })
-    //             // console.log(data);
-
-    //           })
-    //           this._toastr.success('Update review success!', 'Success!');
-    //         }
-    //         else {
-    //           this._toastr.error(data.err, 'Error!');
-    //         }
-    //       })
-    //     }
-    //   }, err => {
-    //     console.log(err)
-    //   })
-    // }
   }
 }
