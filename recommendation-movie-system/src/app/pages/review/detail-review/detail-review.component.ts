@@ -89,10 +89,12 @@ export class DetailReviewComponent implements OnInit {
       content: ['', Validators.required]
     })
 
+
   }
 
   ngOnInit() {
     this.getListReview();
+    this.test();
     // this.reviewForm.controls['idMovie'].setValue(this.movie._id);
     // console.log(this.normalizeTitle("how_to_do_-sesion_3-"));
     // console.log(this.showCategory("phim_phieu_luu,phim_tinh_cam,phim_vien_tuong"));
@@ -106,6 +108,11 @@ export class DetailReviewComponent implements OnInit {
     return items;
   }
 
+  test(){
+    this._movie.testReview().subscribe(data => {
+      console.log(data);
+    });
+  }
   normalizeCategory(category: string) {
     if (category === 'phim_co_trang') return 'Phim Cổ Trang';
     else if (category === 'phim_hai') return 'Phim Hài';
