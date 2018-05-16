@@ -11,11 +11,15 @@ import { MovieService } from '../../services/movie.service'
 export class HomeComponent implements OnInit {
 
   listMovies: any;
+  listTopViews: any;
+  listTopRates: any;
 
   constructor(private _movie: MovieService, private _router: Router) { }
 
   ngOnInit() {
     this.getListMovie();
+    this.getListTopView();
+    this.getListTopRate();
     console.log(this.normalizeTitle("the flash (season 4)"));
     console.log(this.normalizeTitlee(this.normalizeTitle("the flash (season 4)")))
 
@@ -25,10 +29,27 @@ export class HomeComponent implements OnInit {
     let arr = title.split("_");
     return arr.join(' ');
   }
+
   getListMovie() {
     this._movie.getListMovie(``).subscribe(data => {
       this.listMovies = data;
       console.log(this.listMovies);
+    })
+  }
+
+  getListTopView() {
+    this._movie.topView().subscribe(data => {
+      this.listTopViews = data;
+      console.log("list top view")
+      console.log(this.listTopViews);
+    })
+  }
+
+  getListTopRate() {
+    this._movie.topRate().subscribe(data => {
+      this.listTopRates = data;
+      console.log("list top rate")
+      console.log(this.listTopRates);
     })
   }
 
@@ -55,3 +76,6 @@ export class HomeComponent implements OnInit {
     return url.replace('(', '-').replace(')', '-');
   }
 }
+
+
+

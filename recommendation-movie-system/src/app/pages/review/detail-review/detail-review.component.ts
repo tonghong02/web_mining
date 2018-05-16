@@ -177,7 +177,6 @@ export class DetailReviewComponent implements OnInit {
           console.log("create history");
           console.log(data);
         }, err => {
-
           console.log(err);
         })
       }

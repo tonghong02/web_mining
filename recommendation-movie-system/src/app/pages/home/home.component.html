@@ -26,29 +26,29 @@
 <!-- top-brands -->
 <div class="top-brands">
   <div class="container">
-    <h2>Top selling offers</h2>
+    <h2>Danh sách phim gợi ý</h2>
     <div class="grid_3 grid_5">
       <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
         <ul id="myTab" class="nav nav-tabs" role="tablist">
           <li role="presentation" class="active">
-            <a href="#expeditions" id="expeditions-tab" role="tab" data-toggle="tab" aria-controls="expeditions" aria-expanded="true">Advertised offers</a>
+            <a href="#expeditions" id="expeditions-tab" role="tab" data-toggle="tab" aria-controls="expeditions" aria-expanded="true">Phim được xem nhiều nhất</a>
           </li>
           <li role="presentation">
-            <a href="#tours" role="tab" id="tours-tab" data-toggle="tab" aria-controls="tours">Today Offers</a>
+            <a href="#tours" role="tab" id="tours-tab" data-toggle="tab" aria-controls="tours">Phim được đánh gía cao nhất</a>
           </li>
         </ul>
         <div id="myTabContent" class="tab-content">
           <div role="tabpanel" class="tab-pane fade in active" id="expeditions" aria-labelledby="expeditions-tab">
             <div class="agile-tp">
-              <h5>Advertised this week</h5>
-              <p class="w3l-ad">We've pulled together all our advertised offers into one place, so you won't miss out on a great deal.</p>
+              <h5>Mời các bạn đón xem những bộ phim được xem nhiều nhất</h5>
+              <!-- <p class="w3l-ad">We've pulled together all our advertised offers into one place, so you won't miss out on a great deal.</p> -->
             </div>
             <div class="agile_top_brands_grids">
-              <div class="col-md-4 top_brand_left" *ngFor="let movie of listMovies | slice:0:6" (click)="detailMovie(movie?.engTitle)">
+              <div class="col-md-4 top_brand_left" *ngFor="let movie of listTopViews | slice:0:6" (click)="detailMovie(movie?.engTitle)">
                 <div class="hover14 column">
                   <div class="agile_top_brand_left_grid">
                     <div class="agile_top_brand_left_grid_pos">
-                      <img src="assets/images/offer.png" alt=" " class="img-responsive">
+                      <!-- <img src="assets/images/offer.png" alt=" " class="img-responsive"> -->
                     </div>
                     <div class="agile_top_brand_left_grid1">
                       <figure>
@@ -82,15 +82,15 @@
           </div>
           <div role="tabpanel" class="tab-pane fade" id="tours" aria-labelledby="tours-tab">
             <div class="agile-tp">
-              <h5>This week</h5>
-              <p class="w3l-ad">We've pulled together all our advertised offers into one place, so you won't miss out on a great deal.</p>
+              <h5>Mời bạn đón xem những bộ phim được đánh giá cao nhất</h5>
+              <!-- <p class="w3l-ad">We've pulled together all our advertised offers into one place, so you won't miss out on a great deal.</p> -->
             </div>
             <div class="agile_top_brands_grids">
-              <div class="col-md-4 top_brand_left" *ngFor="let movie of listMovies | slice:0:6" (click)="detailMovie(movie?.engTitle)">
+              <div class="col-md-4 top_brand_left" *ngFor="let movie of listTopRates | slice:0:6" (click)="detailMovie(movie?.engTitle)">
                 <div class="hover14 column">
                   <div class="agile_top_brand_left_grid">
                     <div class="agile_top_brand_left_grid_pos">
-                      <img src="assets/images/offer.png" alt=" " class="img-responsive">
+                      <!-- <img src="assets/images/offer.png" alt=" " class="img-responsive"> -->
                     </div>
                     <div class="agile_top_brand_left_grid1">
                       <figure>
@@ -157,7 +157,6 @@
         <img class="third-slide " src="assets/images/kimsareon3.jpg" alt="Third slide" style=" width: 100%;
         height: 450px;">
       </a>
-
     </div>
   </div>
 
@@ -167,13 +166,13 @@
 <!-- new -->
 <div class="newproducts-w3agile">
   <div class="container">
-    <h3>New offers</h3>
+    <h3>Danh sách phim mới phát sóng</h3>
     <div class="agile_top_brands_grids">
       <div class="col-md-4 top_brand_left" *ngFor="let movie of listMovies | slice:0:6" (click)="detailMovie(movie?.engTitle)">
         <div class="hover14 column">
           <div class="agile_top_brand_left_grid">
             <div class="agile_top_brand_left_grid_pos">
-              <img src="assets/images/offer.png" alt=" " class="img-responsive">
+              <!-- <img src="assets/images/offer.png" alt=" " class="img-responsive"> -->
             </div>
             <div class="agile_top_brand_left_grid1">
               <figure>
@@ -183,7 +182,7 @@
                       <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
                     </a>
                     <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.title }}</h4>
-                    <p> YEAR: {{ movie?.year }} </p>
+                    <p> Năm: {{ movie?.year }} </p>
                     <!-- <p>THỂ LOẠI: {{ normalizeCategory(movie?.category) }}</p> -->
                     <p>QUỐC GIA: {{movie?.country}}</p>
                     <p class="content-movie"> {{ movie?.content }} </p>

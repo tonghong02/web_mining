@@ -27,6 +27,14 @@ export class MovieService {
     return this._apiRequest.get(`/movie/top_imdb`)
   }
 
+  topView(){
+    return this._apiRequest.get(`/movie/top_view`)
+  }
+
+  topRate(){
+    return this._apiRequest.get(`/movie/top_rate`)
+  }
+
   searchMovie(query: string){
     return this._apiRequest.get(`/movie/search${query}`);
   }
