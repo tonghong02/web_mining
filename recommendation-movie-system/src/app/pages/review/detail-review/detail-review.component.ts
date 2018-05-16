@@ -65,8 +65,6 @@ export class DetailReviewComponent implements OnInit {
         this.idUser = this.currentUser._id;
         console.log("current user")
         console.log(this.currentUser);
-
-
       }
     }
     console.log(this.currentUser)
