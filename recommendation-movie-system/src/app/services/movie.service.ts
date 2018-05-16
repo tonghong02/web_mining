@@ -46,5 +46,7 @@ export class MovieService {
   updateMovie(id: string, body: any){
     return this._apiHeader.put(`/movie/${id}`, body );
   }
-
+  testReview(){
+    return this._apiRequest.get(`/review/user/rate`)
+  }
 }
