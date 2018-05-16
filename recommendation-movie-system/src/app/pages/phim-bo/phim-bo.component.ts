@@ -20,6 +20,7 @@ export class PhimBoComponent implements OnInit {
   private allItemsDemo: any[];
   category: string = '';
   listMovies: any;
+  listViewCategories: any;
 
   // pager object
   pager: any = {};
@@ -34,13 +35,8 @@ export class PhimBoComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute,
     private _pagination: PaginationService,
-    private _authentication:AuthenticationService
+    private _authentication: AuthenticationService
   ) {
-    this._route.params.subscribe(params => {
-      this.category = params['category'];
-      console.log("category = " + this.category);
-      this.listContact();
-    });
     if (this._authentication.getToken()) {
       this.isLogin = true;
       if (this._authentication.jwtDecode) {
@@ -48,31 +44,44 @@ export class PhimBoComponent implements OnInit {
         this.idUser = this.currentUser._id;
         console.log("current user")
         console.log(this.currentUser);
-        // add movie into history
-        let body = {
-          user: this.idUser,
-          movie: this.engTitle
-        }
-        console.log("body")
-        console.log(body)
-        // this._history.createHistory(body).subscribe(data => {
-        //   console.log("create history");
-        //   console.log(data);
-        // }, err => {
-        //   console.log(err);
-        // })
       }
+      console.log(this.currentUser)
     }
-    console.log(this.currentUser)
+    this._route.params.subscribe(params => {
+      this.category = params['category'];
+      console.log("category = " + this.category);
+      if (this.isLogin === true) {
+        this.listMovie();
+      }
+      else {
+        console.log("view - category")
+        this.listViewCategory();
+      }
+    });
+
+
   }
 
   ngOnInit() {
     console.log(this.normalizeTitle("how to do (sesion 3)"));
-    // this.listContact();
-    // this.testCheckReview();
+
   }
 
-  listContact() {
+  // lay ra danh sach phim theo thu tu giam dan view theo tung category
+  listViewCategory() {
+    console.log(`?category=${this.category}`)
+    this._movie.topViewCategory(`?category=${this.category}`).subscribe(data => {
+      this.allItems = data;
+      console.log("view-category fail login");
+      console.log(this.allItems);
+      this.setPage(1);
+    }, err => {
+      console.log(err);
+    })
+
+  }
+
+  listMovie() {
     this._movie
       .getListMovie(`?category=${this.category}`)
       .subscribe(data => {
@@ -84,18 +93,18 @@ export class PhimBoComponent implements OnInit {
         console.log(this.allItemsDemo);
         this.testCheckReview();
         // initialize to page 1
-        
+
       })
   }
-  testCheckReview(){
+  testCheckReview() {
     this._movie.testReview().subscribe(data => {
       console.log('data');
       console.log(data);
       // this.allItems = this.allItemsDemo;
-      
+
       console.log('this.idUser');
       console.log(this.idUser);
-      
+
       let reviewDuplicate = [];
       let simArray = []
       let userSimArray = []
@@ -107,46 +116,46 @@ export class PhimBoComponent implements OnInit {
       let userArray = data.idUser;
       let movieArray = data.idMovie;
       // tinh toan gia tri rating trung binh cho tung user
-      for(let i = 0; i < rateArray.length;i++){
+      for (let i = 0; i < rateArray.length; i++) {
         let sum = 0;
-        for(let j = 0; j<rateArray[i].length;j++){
-          sum+=data.rate[i][j];
+        for (let j = 0; j < rateArray[i].length; j++) {
+          sum += data.rate[i][j];
         }
-        meanRate.push(sum/rateArray[i].length);
+        meanRate.push(sum / rateArray[i].length);
       }
       console.log('meanRate');
       console.log(meanRate);
       // xac dinh nguoi dung dang dang nhap trong mang rating tra ve
       let locateUserLoggedIn = -1;
-      for(let i = 0; i< userArray.length ; i++){
-        if(userArray[i] == this.idUser){
+      for (let i = 0; i < userArray.length; i++) {
+        if (userArray[i] == this.idUser) {
           locateUserLoggedIn = i;
           break;
         }
       }
-      if(locateUserLoggedIn > -1){
+      if (locateUserLoggedIn > -1) {
         let movieArrayThisUser = movieArray[locateUserLoggedIn];
         let rateArrayThisUser = rateArray[locateUserLoggedIn];
         console.log('locateUserLoggedIn');
         console.log(locateUserLoggedIn);
         console.log(movieArrayThisUser);
         console.log(rateArrayThisUser);
-      
 
-        for(let i = 0; i<rateArray.length; i++){
+
+        for (let i = 0; i < rateArray.length; i++) {
           let movieArrDuplicate = [];
           let rateArrDuplicate = [];
           console.log(rateArray[i]);
           console.log('rateArray[i]');
-          if(i==locateUserLoggedIn){
+          if (i == locateUserLoggedIn) {
             console.log('locateUserLoggedIn');
             console.log(i);
             continue;
-          }else{
+          } else {
 
-            for(let m = 0 ; m < movieArray[i].length ; m++){
-              for(let n = 0 ; n < movieArrayThisUser.length ; n++){
-                if(movieArray[i][m] == movieArrayThisUser[n]){
+            for (let m = 0; m < movieArray[i].length; m++) {
+              for (let n = 0; n < movieArrayThisUser.length; n++) {
+                if (movieArray[i][m] == movieArrayThisUser[n]) {
                   console.log('trung nhau!!!');
                   console.log(movieArrayThisUser[n]);
                   movieArrDuplicate.push(movieArrayThisUser[n]);
@@ -163,12 +172,12 @@ export class PhimBoComponent implements OnInit {
             let numerator = 0;
             let denominator1 = 0;
             let denominator2 = 0;
-            for(let k = 0; k < rateArrDuplicate.length ; k++){
-              numerator += (rateArrDuplicate[k][0] - meanRate[i])*(rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
-              denominator1 += (rateArrDuplicate[k][0] - meanRate[i])*(rateArrDuplicate[k][0] - meanRate[i]);
+            for (let k = 0; k < rateArrDuplicate.length; k++) {
+              numerator += (rateArrDuplicate[k][0] - meanRate[i]) * (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
+              denominator1 += (rateArrDuplicate[k][0] - meanRate[i]) * (rateArrDuplicate[k][0] - meanRate[i]);
               denominator2 += (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]) * (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
             }
-            let sim = numerator/(Math.sqrt(denominator1)*Math.sqrt(denominator2));
+            let sim = numerator / (Math.sqrt(denominator1) * Math.sqrt(denominator2));
             simArray.push(sim);
             userSimArray.push(userArray[i]);
             rateSimArray.push(rateArray[i]);
@@ -178,51 +187,51 @@ export class PhimBoComponent implements OnInit {
         }
         let simArrayCopy = simArray;
         let locateMaxCorrelate = [];
-        for(let i = 0; i<1;i++){
-          let maxSim = Math.max.apply(Math,simArrayCopy);
-          for(let j = 0; j<simArrayCopy.length; j++){
-            if(simArrayCopy[j]== maxSim){
+        for (let i = 0; i < 1; i++) {
+          let maxSim = Math.max.apply(Math, simArrayCopy);
+          for (let j = 0; j < simArrayCopy.length; j++) {
+            if (simArrayCopy[j] == maxSim) {
               locateMaxCorrelate.push(j);
               simArrayCopy[j] = -2;
             }
           }
         }
         let sumSim = 0;
-        for(let j = 0; j<locateMaxCorrelate.length; j++){
+        for (let j = 0; j < locateMaxCorrelate.length; j++) {
           sumSim += simArray[locateMaxCorrelate[j]];
         }
         let pui = [];
         console.log('dm ver 3');
         console.log(this.allItemsDemo);
-        for(let i = 0; i< this.allItemsDemo.length ; i++){
+        for (let i = 0; i < this.allItemsDemo.length; i++) {
           console.log(this.allItemsDemo[i]._id);
           console.log(meanRate[locateUserLoggedIn]);
           let ru = meanRate[locateUserLoggedIn];
           let numerator_p = 0
-          for(let j = 0; j<locateMaxCorrelate.length; j++){
-            for(let k = 0; k< movieSimArray[j].length; k++){
-              if(this.allItemsDemo[i]._id == movieSimArray[j][k]){
+          for (let j = 0; j < locateMaxCorrelate.length; j++) {
+            for (let k = 0; k < movieSimArray[j].length; k++) {
+              if (this.allItemsDemo[i]._id == movieSimArray[j][k]) {
                 console.log('lol');
-                numerator_p += simArray[locateMaxCorrelate[j]]*(rateSimArray[j][k]-meanSimRate[k]);
+                numerator_p += simArray[locateMaxCorrelate[j]] * (rateSimArray[j][k] - meanSimRate[k]);
               }
             }
-            
+
           }
-          pui.push(ru+numerator_p/sumSim);
+          pui.push(ru + numerator_p / sumSim);
         }
         console.log('pui');
         console.log(pui.length);
         console.log(pui);
         let arraySort = [];
-        for(let i = 0; i<pui.length;i++){
-          for(let j = 0;j<pui.length;j++){
-            if(pui[j] == Math.max.apply(Math,pui)){
+        for (let i = 0; i < pui.length; i++) {
+          for (let j = 0; j < pui.length; j++) {
+            if (pui[j] == Math.max.apply(Math, pui)) {
               arraySort.push(j);
               pui[j] = -1;
               break;
             };
           }
-          
+
           // let max = pui[i];
           // let locateMax = i;
           // for(let j = i+1; j<pui.length;j++){
@@ -239,7 +248,7 @@ export class PhimBoComponent implements OnInit {
           // }
         }
         let arr = [];
-        for(let i = 0; i<arraySort.length;i++){
+        for (let i = 0; i < arraySort.length; i++) {
           arr.push(this.allItemsDemo[arraySort[i]]);
         }
         this.allItems = arr;
@@ -256,7 +265,7 @@ export class PhimBoComponent implements OnInit {
         console.log(movieSimArray);
         console.log('this.allItems');
         console.log(this.allItems);
-      }else{
+      } else {
         console.log('chua danh gia gi roi!');
         this.allItems = this.allItemsDemo;
         this.setPage(1);
@@ -294,10 +303,10 @@ export class PhimBoComponent implements OnInit {
     else if (category === 'phim_vien_tuong') return 'Phim Viễn Tưởng';
   }
 
-  normalizeTitle(title: string){
+  normalizeTitle(title: string) {
     let arr = title.split(" ");
     let url = arr.join('_');
-    return url.replace('(', '-').replace(')','-');
+    return url.replace('(', '-').replace(')', '-');
   }
 
   createRange(number) {

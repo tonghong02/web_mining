@@ -1,9 +1,9 @@
 <!-- register -->
 <div class="register">
   <div class="container">
-    <h2>Register Here</h2>
+    <h2>Đăng ký tài khoản</h2>
     <div class="login-form-grids">
-      <h5>profile information</h5>
+      <h5>Thông tin đăng ký</h5>
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <input type="email" placeholder="Enter email" formControlName="email" (focus)="mesEmail = ''">
@@ -20,7 +20,7 @@
         <div>
           <div class="form-group">
             <select class="form-control" formControlName="birth" (focus)="mesBirth = ''">
-              <option [ngValue]="''"> --- Select year of birth ---</option>
+              <option [ngValue]="''"> --- Chọn năm sinh ---</option>
               <option *ngFor="let birth of createRange(1970, 2018)" [ngValue]="birth">
                 {{ birth }}
               </option>
@@ -31,7 +31,7 @@
           </div>
           <div class="form-group">
             <select class="form-control" formControlName="sex" (focus)="mesSex = ''">
-              <option [ngValue]="''"> --- Select year sex ---</option>
+              <option [ngValue]="''"> --- Chọn giới tính ---</option>
               <option *ngFor="let item of ['Female', 'Male']" [ngValue]="item">
                 {{ item }}
               </option>
@@ -41,7 +41,7 @@
             </span>
           </div>
         </div>
-        <h6>Login information</h6>
+        <h6>Thông tin đăng nhập</h6>
         <div class="form-group">
           <input type="text" placeholder="Enter username" formControlName="username" (focus)="mesUsername = ''">
           <span *ngIf="mesUsername" style="color: red;">
@@ -58,7 +58,7 @@
           <input type="password" placeholder="Confirm password" formControlName="confirm_password">
           <span *ngIf="cpwd.hasError('invalid')"> Invalid Password </span>
         </div> -->
-        <input type="submit" value="REGISTER">
+        <input type="submit" value="ĐĂNG KÝ">
       </form>
     </div>
 

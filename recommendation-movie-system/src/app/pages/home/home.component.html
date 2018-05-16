@@ -58,9 +58,9 @@
                               <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
                             </a>
                             <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.title }}</h4>
-                            <p> YEAR: {{ movie?.year }} </p>
-                            <!-- <p>THỂ LOẠI: {{ normalizeCategory(movie?.category) }}</p> -->
-                            <p>QUỐC GIA: {{movie?.country}}</p>
+                            <!-- <p> Năm: {{ movie?.year }} </p> -->
+                            <p> Lượt xem: {{ movie?.view }} </p>
+                            <p>Quốc gia: {{movie?.country}}</p>
                             <p class="content-movie"> {{ movie?.content }} </p>
                           </div>
                           <div class="snipcart-details top_brand_home_details">
@@ -100,9 +100,9 @@
                               <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
                             </a>
                             <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.title }}</h4>
-                            <p> YEAR: {{ movie?.year }} </p>
-                            <!-- <p>THỂ LOẠI: {{ normalizeCategory(movie?.category) }}</p> -->
-                            <p>QUỐC GIA: {{movie?.country}}</p>
+                            <!-- <p> Năm: {{ movie?.year }} </p> -->
+                            <p> Đánh giá: {{ movie?.rate }} </p>
+                            <p>Quốc gia: {{movie?.country}}</p>
                             <p class="content-movie"> {{ movie?.content }} </p>
                           </div>
                           <div class="snipcart-details top_brand_home_details">
@@ -183,13 +183,11 @@
                     </a>
                     <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.title }}</h4>
                     <p> Năm: {{ movie?.year }} </p>
-                    <!-- <p>THỂ LOẠI: {{ normalizeCategory(movie?.category) }}</p> -->
-                    <p>QUỐC GIA: {{movie?.country}}</p>
+                    <p>Quốc gia: {{movie?.country}}</p>
                     <p class="content-movie"> {{ movie?.content }} </p>
                   </div>
                   <div class="snipcart-details top_brand_home_details">
                     <form action="#" method="post">
-
                       <input type="submit" name="submit" value="Xem chi tiết" class="button" />
                     </form>
                   </div>

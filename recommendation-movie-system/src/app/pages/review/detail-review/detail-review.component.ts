@@ -31,6 +31,8 @@ export class DetailReviewComponent implements OnInit {
   listReviews: any;
   idUser: string = '';
   pagedItems: any;
+  view: number = 0;
+  rate: any;
   src1: string = 'assets/images/star.png';
   src2: string = 'assets/images/star.png';
   src3: string = 'assets/images/star.png';
@@ -44,6 +46,9 @@ export class DetailReviewComponent implements OnInit {
       let category: string = '';
       this._movie.detailMovie(this.engTitle).subscribe(data => {
         this.movie = data[0];
+        this.view = data[0].view;
+        console.log("rate: " + data[0].rate)
+        data[0].rate === 'undefined' ? this.rate = 0 : this.rate = data[0].rate;
         this.thisYear = data[0].year;
         console.log('year = ' + this.thisYear);
 
@@ -63,23 +68,23 @@ export class DetailReviewComponent implements OnInit {
         this._movie.getListMovie(`?year=${this.thisYear}&category=${data[0].category.split(',')[0]}`).subscribe(data => {
           console.log("year");
           console.log(data[0].view);
-          for(let i = 0; i< data.length;i++){
-            if(data[i]._id == this.movie._id){
+          for (let i = 0; i < data.length; i++) {
+            if (data[i]._id == this.movie._id) {
               console.log('yes');
-              data.splice(i,1);
+              data.splice(i, 1);
               break;
-            }else{
+            } else {
               console.log('no');
             }
           }
           let listView = []
           let arrRecomend = []
-          for(let i = 0; i<data.length ; i++){
+          for (let i = 0; i < data.length; i++) {
             listView.push(data[i].view);
           }
-          for(let i = 0; i<3 ; i++){
-            arrRecomend.push(data[listView.indexOf(Math.max.apply(Math,listView))]);
-            listView[listView.indexOf(Math.max.apply(Math,listView))] = -1;
+          for (let i = 0; i < 3; i++) {
+            arrRecomend.push(data[listView.indexOf(Math.max.apply(Math, listView))]);
+            listView[listView.indexOf(Math.max.apply(Math, listView))] = -1;
           }
           this.pagedItems = arrRecomend;
         });
@@ -203,6 +208,43 @@ export class DetailReviewComponent implements OnInit {
   }
 
   watchMovie() {
+    this.view += 1;
+
+    // increase view of movie
+    this._movie.detailMovie(this.engTitle).subscribe(data => {
+      if (data.length !== 0) {
+        for (let i = 0; i < data.length; i++) {
+          // update view for movie
+          let movieUpdate = {
+            title: this.movie.title,
+            year: this.movie.year,
+            imdb: this.movie.imdb,
+            engTitle: this.engTitle,
+            view: (typeof data[i].view != 'number') ? +data[i].view + 1 : data[i].view + 1,
+            content: this.movie.content,
+            rate: this.movie.rate,
+            country: this.movie.country,
+            category: data[i].category,
+            linkWatch: this.movie.linkWatch,
+            linkBackgrounds: this.movie.linkBackgrounds,
+            linkPhim: this.movie.linkPhim,
+          }
+          console.log("movie update");
+          console.log(movieUpdate);
+          this._movie.updateMovie(data[i]._id, movieUpdate).subscribe(data => {
+            if (!data.err) {
+              console.log("UPDATE VIEW SUCCESS!");
+              console.log(data)
+            }
+            else {
+              console.log("update movie fail")
+            }
+          })
+        }
+      }
+    }, err => {
+      console.log(err)
+    })
     // add movie into history
     let body = {
       user: this.idUser,
@@ -222,40 +264,6 @@ export class DetailReviewComponent implements OnInit {
       }
     })
 
-    // increase view of movie
-    this._movie.detailMovie(this.engTitle).subscribe(data => {
-      if (data.length !== 0) {
-        for (let i = 0; i < data.length; i++) {
-          // update view for movie
-          let movieUpdate = {
-            title: this.movie.title,
-            year: this.movie.year,
-            imdb: this.movie.imdb,
-            engTitle: this.engTitle,
-            view: (typeof data[i].view != 'number') ? + data[i].view + 1 : data[i].view + 1,
-            content: this.movie.content,
-            rate: this.movie.rate,
-            country: this.movie.country,
-            category: data[i].category,
-            linkWatch: this.movie.linkWatch,
-            linkBackgrounds: this.movie.linkBackgrounds,
-            linkPhim: this.movie.linkPhim,
-          }
-          console.log("movie update");
-          console.log(movieUpdate);
-          this._movie.updateMovie(data[i]._id, movieUpdate).subscribe(data => {
-            if (!data.err) {
-              console.log("UPDATE VIEW SUCCESS!");
-            }
-            else {
-              console.log("update movie fail")
-            }
-          })
-        }
-      }
-    }, err => {
-      console.log(err)
-    })
 
   }
 
@@ -310,6 +318,7 @@ export class DetailReviewComponent implements OnInit {
                 rate += result.rate;
               };
               console.log("rate = " + rate);
+              this.rate = _.ceil(rate / sumReviewThisMovie, 2);
 
               this._movie.detailMovie(this.engTitle).subscribe(data => {
                 //if have move -> update movie
@@ -371,6 +380,7 @@ export class DetailReviewComponent implements OnInit {
                 rate += result.rate;
               };
               console.log("rate = " + rate);
+              this.rate = _.ceil(rate / sumReviewThisMovie, 2);
 
               this._movie.detailMovie(this.engTitle).subscribe(data => {
                 //if have move -> update movie

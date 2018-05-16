@@ -20,9 +20,6 @@ export class HomeComponent implements OnInit {
     this.getListMovie();
     this.getListTopView();
     this.getListTopRate();
-    console.log(this.normalizeTitle("the flash (season 4)"));
-    console.log(this.normalizeTitlee(this.normalizeTitle("the flash (season 4)")))
-
   }
 
   normalizeTitlee(title: string) {

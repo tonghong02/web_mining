@@ -31,20 +31,32 @@
           </div>
           <div class="w3agile_description">
             <h4 class="text-bold">Mô tả :</h4>
-            <div style="text-align:justify;">{{ movie?.content }}</div><br>
-            <p ><a [href]="'http://www.' + movie?.linkWatch" target="_blank" (click)="watchMovie()">Xem phim</a></p>
+            <div style="text-align:justify;">{{ movie?.content }}</div>
+            <br>
+            <p>
+              <a [href]="'http://www.' + movie?.linkWatch" target="_blank" (click)="watchMovie()">Xem phim</a>
+            </p>
             <!-- <button class="btn" style="background: #fe9126;" (click)="watchMovie()"><a style="color: white;" [href]="'http://www.' + movie?.linkWatch" target="_blank">Xem phim</a></button> -->
           </div>
           <div class="snipcart-item block">
             <div class="snipcart-thumb agileinfo_single_right_snipcart">
-              <p *ngIf="movie?.imdb"><span class="text-bold">IMDB:</span> {{ movie?.imdb }}</p>
-              <!-- <p *ngIf="movie?.rate"><span class="text-bold">RATE:</span> {{ movie?.rate }}</p> -->
-              <p><span class="text-bold">Năm:</span> {{ movie?.year }}</p>
-              <p><span class="text-bold">Thể loại:</span> {{showCategory(movie?.category)}}</p>
-              <p style="text-transform: capitalize;"><span class="text-bold">Quốc gia:</span> {{ movie?.country }}</p>
+              <p *ngIf="movie?.imdb">
+                <span class="text-bold">IMDB:</span> {{ movie?.imdb }}</p>
+              <p>
+                <span class="text-bold">Số lượt xem:</span> {{ view }}</p>
+              <p *ngIf="rate !== 'undefined'">
+                <span class="text-bold">Điểm đánh giá:</span> {{ rate }}</p>
+              <p>
+                <span class="text-bold">Năm:</span> {{ movie?.year }}</p>
+              <p>
+                <span class="text-bold">Thể loại:</span> {{showCategory(movie?.category)}}</p>
+              <p style="text-transform: capitalize;">
+                <span class="text-bold">Quốc gia:</span> {{ movie?.country }}</p>
             </div>
             <div *ngIf="isLogin" class="form-group" id="comment">
-              <p><span class="text-bold">Đánh giá:</span></p>
+              <p>
+                <span class="text-bold">Đánh giá:</span>
+              </p>
               <textarea rows="5" style="width: 100%; padding: 2%; border-radius: 2%;" formControlName="content" (focus)="mesContent=''"></textarea>
               <p *ngIf="mesContent" class="alert alert-danger"> {{ mesContent }}</p>
             </div>
@@ -60,8 +72,6 @@
     <div class="clearfix"> </div>
   </div>
 </div>
-<!-- <pre>{{ reviewForm.value | json }}</pre> -->
-<!-- list review -->
 
 <br>
 <div class="container">
@@ -70,6 +80,7 @@
   </div>
   <div class="list-review" *ngFor="let item of listReviews">
     <h4>{{ item?.user?.username }}</h4>
+    <p>{{ item?.user?.email }}</p>
     <div>
       <span class="rate-group" *ngFor="let star of createRange(item?.rate);">
         <img src="assets/images/star1.png">
@@ -84,88 +95,31 @@
 
 <div class="newproducts-w3agile">
   <div class="container">
-      <h3>Danh sách gợi ý</h3>
-      <div class="agile_top_brands_grids">
-          <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie?.engTitle)">
-              <div class="hover14 column">
-                  <div class="agile_top_brand_left_grid">
-                      <div class="agile_top_brand_left_grid_pos">
-                          <img src="assets/images/offer.png" alt=" " class="img-responsive">
-                      </div>
-
-                      <div class="agile_top_brand_left_grid1">
-                          <figure>
-                              <div class="snipcart-item block">
-                                  <div class="snipcart-thumb">
-                                      <a routerLink="/phim/{{normalizeTitle(movie?.engTitle)}}">
-                                          <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
-                                      </a>
-                                      <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%;">{{ movie?.title }}</h4>
-                                      <p> Năm: {{ movie?.year }} </p>
-                                      <p class="content-movie"> {{ movie?.content }} </p>
-                                  </div>
-                                  <div class="snipcart-details top_brand_home_details">
-                                      <form action="#" method="post">
-
-                                          <input type="submit" name="submit" value="Xem chi tiết" class="button" />
-                                      </form>
-                                  </div>
-                              </div>
-                          </figure>
-                      </div>
-                  </div>
-              </div>
-              <br>
-              <br>
-          </div>
-          <div class="clearfix"> </div>
-      </div>
-  </div>
-</div>
-<!-- new -->
-<!-- <div class="newproducts-w3agile">
-  <div class="container">
-    <h3>New offers</h3>
+    <h3>Danh sách gợi ý</h3>
     <div class="agile_top_brands_grids">
-      <div class="col-md-3 top_brand_left-1">
+      <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie?.engTitle)">
         <div class="hover14 column">
           <div class="agile_top_brand_left_grid">
             <div class="agile_top_brand_left_grid_pos">
-              <img src="assets/images/offer.png" alt=" " class="img-responsive">
+              <!-- <img src="assets/images/offer.png" alt=" " class="img-responsive"> -->
             </div>
+
             <div class="agile_top_brand_left_grid1">
               <figure>
                 <div class="snipcart-item block">
                   <div class="snipcart-thumb">
-                    <a href="products.html">
-                      <img title=" " alt=" " src="assets/images/14.png">
+                    <a routerLink="/phim/{{normalizeTitle(movie?.engTitle)}}">
+                      <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
                     </a>
-                    <p>Fried-gram</p>
-                    <div class="stars">
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                    </div>
-                    <h4>$35.99
-                      <span>$55.00</span>
-                    </h4>
+                    <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%;">{{ movie?.title }}</h4>
+                    <p> Năm: {{ movie?.year }} </p>
+                    <!-- <p> Đánh giá: {{ movie?.rate }} </p> -->
+                    <p> Quốc gia: {{ movie?.country }} </p>
+                    <p class="content-movie"> {{ movie?.content }} </p>
                   </div>
                   <div class="snipcart-details top_brand_home_details">
                     <form action="#" method="post">
-                      <fieldset>
-                        <input type="hidden" name="cmd" value="_cart">
-                        <input type="hidden" name="add" value="1">
-                        <input type="hidden" name="business" value=" ">
-                        <input type="hidden" name="item_name" value="Fortune Sunflower Oil">
-                        <input type="hidden" name="amount" value="35.99">
-                        <input type="hidden" name="discount_amount" value="1.00">
-                        <input type="hidden" name="currency_code" value="USD">
-                        <input type="hidden" name="return" value=" ">
-                        <input type="hidden" name="cancel_return" value=" ">
-                        <input type="submit" name="submit" value="Add to cart" class="button">
-                      </fieldset>
+                      <input type="submit" name="submit" value="Xem chi tiết" class="button" />
                     </form>
                   </div>
                 </div>
@@ -173,153 +127,10 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-3 top_brand_left-1">
-        <div class="hover14 column">
-          <div class="agile_top_brand_left_grid">
-            <div class="agile_top_brand_left_grid_pos">
-              <img src="assets/images/offer.png" alt=" " class="img-responsive">
-            </div>
-            <div class="agile_top_brand_left_grid1">
-              <figure>
-                <div class="snipcart-item block">
-                  <div class="snipcart-thumb">
-                    <a href="products.html">
-                      <img title=" " alt=" " src="assets/images/15.png">
-                    </a>
-                    <p>Navaratan-dal</p>
-                    <div class="stars">
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                    </div>
-                    <h4>$30.99
-                      <span>$45.00</span>
-                    </h4>
-                  </div>
-                  <div class="snipcart-details top_brand_home_details">
-                    <form action="#" method="post">
-                      <fieldset>
-                        <input type="hidden" name="cmd" value="_cart">
-                        <input type="hidden" name="add" value="1">
-                        <input type="hidden" name="business" value=" ">
-                        <input type="hidden" name="item_name" value="basmati rise">
-                        <input type="hidden" name="amount" value="30.99">
-                        <input type="hidden" name="discount_amount" value="1.00">
-                        <input type="hidden" name="currency_code" value="USD">
-                        <input type="hidden" name="return" value=" ">
-                        <input type="hidden" name="cancel_return" value=" ">
-                        <input type="submit" name="submit" value="Add to cart" class="button">
-                      </fieldset>
-                    </form>
-                  </div>
-                </div>
-              </figure>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 top_brand_left-1">
-        <div class="hover14 column">
-          <div class="agile_top_brand_left_grid">
-            <div class="agile_top_brand_left_grid_pos">
-              <img src="assets/images/offer.png" alt=" " class="img-responsive">
-            </div>
-            <div class="agile_top_brand_left_grid_pos">
-              <img src="images/offer.png" alt=" " class="img-responsive">
-            </div>
-            <div class="agile_top_brand_left_grid1">
-              <figure>
-                <div class="snipcart-item block">
-                  <div class="snipcart-thumb">
-                    <a href="products.html">
-                      <img src="assets/images/16.png" alt=" " class="img-responsive">
-                    </a>
-                    <p>White-peasmatar</p>
-                    <div class="stars">
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                    </div>
-                    <h4>$80.99
-                      <span>$105.00</span>
-                    </h4>
-                  </div>
-                  <div class="snipcart-details top_brand_home_details">
-                    <form action="#" method="post">
-                      <fieldset>
-                        <input type="hidden" name="cmd" value="_cart">
-                        <input type="hidden" name="add" value="1">
-                        <input type="hidden" name="business" value=" ">
-                        <input type="hidden" name="item_name" value="Pepsi soft drink">
-                        <input type="hidden" name="amount" value="80.00">
-                        <input type="hidden" name="discount_amount" value="1.00">
-                        <input type="hidden" name="currency_code" value="USD">
-                        <input type="hidden" name="return" value=" ">
-                        <input type="hidden" name="cancel_return" value=" ">
-                        <input type="submit" name="submit" value="Add to cart" class="button">
-                      </fieldset>
-                    </form>
-                  </div>
-                </div>
-              </figure>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 top_brand_left-1">
-        <div class="hover14 column">
-          <div class="agile_top_brand_left_grid">
-            <div class="agile_top_brand_left_grid_pos">
-              <img src="assets/images/offer.png" alt=" " class="img-responsive">
-            </div>
-            <div class="agile_top_brand_left_grid1">
-              <figure>
-                <div class="snipcart-item block">
-                  <div class="snipcart-thumb">
-                    <a href="products.html">
-                      <img title=" " alt=" " src="assets/images/17.png">
-                    </a>
-                    <p>Channa-dal</p>
-                    <div class="stars">
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                      <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                    </div>
-                    <h4>$35.99
-                      <span>$55.00</span>
-                    </h4>
-                  </div>
-                  <div class="snipcart-details top_brand_home_details">
-                    <form action="#" method="post">
-                      <fieldset>
-                        <input type="hidden" name="cmd" value="_cart">
-                        <input type="hidden" name="add" value="1">
-                        <input type="hidden" name="business" value=" ">
-                        <input type="hidden" name="item_name" value="Fortune Sunflower Oil">
-                        <input type="hidden" name="amount" value="35.99">
-                        <input type="hidden" name="discount_amount" value="1.00">
-                        <input type="hidden" name="currency_code" value="USD">
-                        <input type="hidden" name="return" value=" ">
-                        <input type="hidden" name="cancel_return" value=" ">
-                        <input type="submit" name="submit" value="Add to cart" class="button">
-                      </fieldset>
-                    </form>
-                  </div>
-                </div>
-              </figure>
-            </div>
-          </div>
-        </div>
+        <br>
+        <br>
       </div>
       <div class="clearfix"> </div>
     </div>
   </div>
-</div> -->
-<!-- //new -->
+</div>

@@ -2,10 +2,10 @@
 <!-- login -->
 <div class="login">
   <div class="container">
-    <h2>Login Form</h2>
+    <h2>Thông tin đăng nhập</h2>
   
     <div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" action="#">
         <input type="text" placeholder="Enter username" formControlName="username" (focus)="mesUsername = ''" >
         <span  *ngIf="mesUsername" style="color: red;">
           {{mesUsername}}
@@ -14,11 +14,11 @@
         <span *ngIf="mesPassword" style="color: red;">
           {{mesPassword}}
         </span>
-        <input type="submit" value="LOGIN">
+        <input type="submit" value="ĐĂNG NHẬP">
       </form>
     </div>
-    <h4>For New People</h4>
-    <p><a routerLink="/signup">Register Here</a> (Or) go back to <a routerLink="/home">Home<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></p>
+    <h4>Nếu bạn chưa có tài khoản</h4>
+    <p><a routerLink="/signup">Đăng ký ngay tại đây</a> (Or) đi đến <a routerLink="/home">Trang chủ<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></p>
   </div>
 </div>
 <!-- //login -->

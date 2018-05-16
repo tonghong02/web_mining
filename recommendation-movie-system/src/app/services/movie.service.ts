@@ -24,15 +24,19 @@ export class MovieService {
   }
 
   topIMDB(){
-    return this._apiRequest.get(`/movie/top_imdb`)
+    return this._apiRequest.get(`/movie/top_imdb`);
   }
 
   topView(){
-    return this._apiRequest.get(`/movie/top_view`)
+    return this._apiRequest.get(`/movie/top_view`);
   }
 
   topRate(){
-    return this._apiRequest.get(`/movie/top_rate`)
+    return this._apiRequest.get(`/movie/top_rate`);
+  }
+
+  topViewCategory(query?: string){
+    return this._apiRequest.get(`/movie/top_view_category${query}`);
   }
 
   searchMovie(query: string){
@@ -44,7 +48,7 @@ export class MovieService {
   }
 
   updateMovie(id: string, body: any){
-    return this._apiHeader.put(`/movie/${id}`, body );
+    return this._apiRequest.put(`/movie/${id}`, body );
   }
   testReview(){
     return this._apiRequest.get(`/review/user/rate`)
