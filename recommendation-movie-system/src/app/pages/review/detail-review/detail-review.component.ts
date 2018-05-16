@@ -24,12 +24,13 @@ export class DetailReviewComponent implements OnInit {
   isLogin: boolean = false;
   currentUser: UserModel;
   reviewForm: FormGroup;
+  thisYear: string;
   mesRate: string = '';
   mesContent: string = '';
   isErr = false;
   listReviews: any;
   idUser: string = '';
-
+  pagedItems: any;
   src1: string = 'assets/images/star.png';
   src2: string = 'assets/images/star.png';
   src3: string = 'assets/images/star.png';
@@ -43,6 +44,9 @@ export class DetailReviewComponent implements OnInit {
       let category: string = '';
       this._movie.detailMovie(this.engTitle).subscribe(data => {
         this.movie = data[0];
+        this.thisYear = data[0].year;
+        console.log('year = ' + this.thisYear);
+
         for (let i = 0; i < data.length; i++) {
           if (i === data.length - 1) {
             category += data[i].category;
@@ -55,7 +59,15 @@ export class DetailReviewComponent implements OnInit {
 
         console.log("detail movie");
         console.log(this.movie);
+        // 
+        this._movie.getListMovie(`?year=${this.thisYear}&category=${data[0].category.split(',')[0]}`).subscribe(data => {
+          console.log("year");
+          console.log(data);
+          this.pagedItems = data;
+        });
+        // 
       });
+
     });
 
     if (this._authentication.getToken()) {
@@ -94,7 +106,8 @@ export class DetailReviewComponent implements OnInit {
 
   ngOnInit() {
     this.getListReview();
-    this.test();
+
+    this.recomment();
     // this.reviewForm.controls['idMovie'].setValue(this.movie._id);
     // console.log(this.normalizeTitle("how_to_do_-sesion_3-"));
     // console.log(this.showCategory("phim_phieu_luu,phim_tinh_cam,phim_vien_tuong"));
@@ -108,10 +121,12 @@ export class DetailReviewComponent implements OnInit {
     return items;
   }
 
-  test(){
-    this._movie.testReview().subscribe(data => {
-      console.log(data);
-    });
+  recomment() {
+    // this._movie.getListMovie(`?year=${this.thisYear}`).subscribe(data => {
+    //   console.log("year");
+    //   console.log(data);
+    //   this.pagedItems = data;
+    // });
   }
   normalizeCategory(category: string) {
     if (category === 'phim_co_trang') return 'Phim Cổ Trang';
@@ -367,4 +382,11 @@ export class DetailReviewComponent implements OnInit {
     //   })
     // }
   }
+
+  detailMovie(title: string) {
+    let engTitle = this.normalizeTitle(title);
+    console.log("engTitle = " + engTitle);
+    this._router.navigateByUrl(`/phim/${engTitle}`);
+  }
+
 }

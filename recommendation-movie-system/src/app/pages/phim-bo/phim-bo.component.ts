@@ -68,6 +68,7 @@ export class PhimBoComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.normalizeTitle("how to do (sesion 3)"));
+    // this.listContact();
     this.testCheckReview();
   }
 
@@ -81,14 +82,15 @@ export class PhimBoComponent implements OnInit {
         this.allItemsDemo = data;
 
         // initialize to page 1
-        this.setPage(1);
+        
       })
   }
   testCheckReview(){
     this._movie.testReview().subscribe(data => {
       console.log('data');
       console.log(data);
-      this.allItems = this.allItemsDemo;
+      // this.allItems = this.allItemsDemo;
+      
       console.log('this.idUser');
       console.log(this.idUser);
       
@@ -113,105 +115,150 @@ export class PhimBoComponent implements OnInit {
       console.log('meanRate');
       console.log(meanRate);
       // xac dinh nguoi dung dang dang nhap trong mang rating tra ve
-      let locateUserLoggedIn;
+      let locateUserLoggedIn = -1;
       for(let i = 0; i< userArray.length ; i++){
         if(userArray[i] == this.idUser){
           locateUserLoggedIn = i;
           break;
         }
       }
-      let movieArrayThisUser = movieArray[locateUserLoggedIn];
-      let rateArrayThisUser = rateArray[locateUserLoggedIn];
-      console.log('locateUserLoggedIn');
-      console.log(locateUserLoggedIn);
-      console.log(movieArrayThisUser);
-      console.log(rateArrayThisUser);
+      if(locateUserLoggedIn > -1){
+        let movieArrayThisUser = movieArray[locateUserLoggedIn];
+        let rateArrayThisUser = rateArray[locateUserLoggedIn];
+        console.log('locateUserLoggedIn');
+        console.log(locateUserLoggedIn);
+        console.log(movieArrayThisUser);
+        console.log(rateArrayThisUser);
       
-      for(let i = 0; i<rateArray.length; i++){
-        let movieArrDuplicate = [];
-        let rateArrDuplicate = [];
-        console.log(rateArray[i]);
-        console.log('rateArray[i]');
-        if(i==locateUserLoggedIn){
-          console.log('locateUserLoggedIn');
-          console.log(i);
-          continue;
-        }else{
 
-          for(let m = 0 ; m < movieArray[i].length ; m++){
-            for(let n = 0 ; n < movieArrayThisUser.length ; n++){
-              if(movieArray[i][m] == movieArrayThisUser[n]){
-                console.log('trung nhau!!!');
-                console.log(movieArrayThisUser[n]);
-                movieArrDuplicate.push(movieArrayThisUser[n]);
-                let thisReview = [];
-                thisReview.push(data.rate[i][m]);
-                thisReview.push(rateArrayThisUser[n]);
-                rateArrDuplicate.push(thisReview);
+        for(let i = 0; i<rateArray.length; i++){
+          let movieArrDuplicate = [];
+          let rateArrDuplicate = [];
+          console.log(rateArray[i]);
+          console.log('rateArray[i]');
+          if(i==locateUserLoggedIn){
+            console.log('locateUserLoggedIn');
+            console.log(i);
+            continue;
+          }else{
+
+            for(let m = 0 ; m < movieArray[i].length ; m++){
+              for(let n = 0 ; n < movieArrayThisUser.length ; n++){
+                if(movieArray[i][m] == movieArrayThisUser[n]){
+                  console.log('trung nhau!!!');
+                  console.log(movieArrayThisUser[n]);
+                  movieArrDuplicate.push(movieArrayThisUser[n]);
+                  let thisReview = [];
+                  thisReview.push(data.rate[i][m]);
+                  thisReview.push(rateArrayThisUser[n]);
+                  rateArrDuplicate.push(thisReview);
+                }
               }
             }
-          }
-          console.log('determine the rating duplicate');
-          console.log(movieArrDuplicate);
-          console.log(rateArrDuplicate);
-          let numerator = 0;
-          let denominator1 = 0;
-          let denominator2 = 0;
-          for(let k = 0; k < rateArrDuplicate.length ; k++){
-            numerator += (rateArrDuplicate[k][0] - meanRate[i])*(rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
-            denominator1 += (rateArrDuplicate[k][0] - meanRate[i])*(rateArrDuplicate[k][0] - meanRate[i]);
-            denominator2 += (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]) * (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
-          }
-          let sim = numerator/(Math.sqrt(denominator1)*Math.sqrt(denominator2));
-          simArray.push(sim);
-          userSimArray.push(userArray[i]);
-          rateSimArray.push(rateArray[i]);
-          movieSimArray.push(movieArray[i]);
-          meanSimRate.push(meanRate[i]);
-        }
-      }
-      let simArrayCopy = simArray;
-      let locateMaxCorrelate = [];
-      for(let i = 0; i<2;i++){
-        let maxSim = Math.max.apply(Math,simArrayCopy);
-        for(let j = 0; j<simArrayCopy.length; j++){
-          if(simArrayCopy[j]== maxSim){
-            locateMaxCorrelate.push(j);
-            simArrayCopy[j] = -2;
+            console.log('determine the rating duplicate');
+            console.log(movieArrDuplicate);
+            console.log(rateArrDuplicate);
+            let numerator = 0;
+            let denominator1 = 0;
+            let denominator2 = 0;
+            for(let k = 0; k < rateArrDuplicate.length ; k++){
+              numerator += (rateArrDuplicate[k][0] - meanRate[i])*(rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
+              denominator1 += (rateArrDuplicate[k][0] - meanRate[i])*(rateArrDuplicate[k][0] - meanRate[i]);
+              denominator2 += (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]) * (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
+            }
+            let sim = numerator/(Math.sqrt(denominator1)*Math.sqrt(denominator2));
+            simArray.push(sim);
+            userSimArray.push(userArray[i]);
+            rateSimArray.push(rateArray[i]);
+            movieSimArray.push(movieArray[i]);
+            meanSimRate.push(meanRate[i]);
           }
         }
-      }
-      let sumSim = 0;
-      for(let j = 0; j<locateMaxCorrelate.length; j++){
-        sumSim += simArray[locateMaxCorrelate[j]];
-      }
-      let pui = [];
-      for(let i = 0; i< this.allItemsDemo.length ; i++){
-        console.log(this.allItemsDemo[i]._id);
-        console.log(meanRate[locateUserLoggedIn]);
-        let ru = meanRate[locateUserLoggedIn];
-        let numerator_p = 0
-        for(let j = 0; j<locateMaxCorrelate.length; j++){
-          for(let k = 0; k< movieSimArray[j].length; k++){
-            if(this.allItemsDemo[i]._id == movieSimArray[j][k]){
-              console.log('lol');
-              numerator_p += simArray[locateMaxCorrelate[j]]*(rateSimArray[j][k]-meanSimRate[k]);
+        let simArrayCopy = simArray;
+        let locateMaxCorrelate = [];
+        for(let i = 0; i<1;i++){
+          let maxSim = Math.max.apply(Math,simArrayCopy);
+          for(let j = 0; j<simArrayCopy.length; j++){
+            if(simArrayCopy[j]== maxSim){
+              locateMaxCorrelate.push(j);
+              simArrayCopy[j] = -2;
             }
           }
-          
         }
-        pui.push(ru+numerator_p/sumSim);
+        let sumSim = 0;
+        for(let j = 0; j<locateMaxCorrelate.length; j++){
+          sumSim += simArray[locateMaxCorrelate[j]];
+        }
+        let pui = [];
+        for(let i = 0; i< this.allItemsDemo.length ; i++){
+          console.log(this.allItemsDemo[i]._id);
+          console.log(meanRate[locateUserLoggedIn]);
+          let ru = meanRate[locateUserLoggedIn];
+          let numerator_p = 0
+          for(let j = 0; j<locateMaxCorrelate.length; j++){
+            for(let k = 0; k< movieSimArray[j].length; k++){
+              if(this.allItemsDemo[i]._id == movieSimArray[j][k]){
+                console.log('lol');
+                numerator_p += simArray[locateMaxCorrelate[j]]*(rateSimArray[j][k]-meanSimRate[k]);
+              }
+            }
+            
+          }
+          pui.push(ru+numerator_p/sumSim);
+        }
+        console.log('pui');
+        console.log(pui.length);
+        console.log(pui);
+        let arraySort = [];
+        for(let i = 0; i<pui.length;i++){
+          for(let j = 0;j<pui.length;j++){
+            if(pui[j] == Math.max.apply(Math,pui)){
+              arraySort.push(j);
+              pui[j] = -1;
+              break;
+            };
+          }
+          
+          // let max = pui[i];
+          // let locateMax = i;
+          // for(let j = i+1; j<pui.length;j++){
+          //   if(pui[j]>max){
+          //     locateMax = j;
+          //     max = pui[j];
+          //   }
+          //   if(j == pui.length-1){
+          //     arraySort.push(locateMax);
+          //     let swap = pui[locateMax];
+          //     pui[locateMax] = pui[i];
+          //     pui[i] = swap;
+          //   }
+          // }
+        }
+        let arr = [];
+        for(let i = 0; i<arraySort.length;i++){
+          arr.push(this.allItemsDemo[arraySort[i]]);
+        }
+        this.allItems = arr;
+        this.setPage(1);
+        console.log('arraySort');
+        console.log(arraySort);
+        console.log('pui');
+        console.log(pui);
+        console.log('Max 5 correlate');
+        console.log(locateMaxCorrelate);
+        console.log('simArray');
+        console.log(simArray);
+        console.log('movieSimArray');
+        console.log(movieSimArray);
+        console.log('this.allItems');
+        console.log(this.allItems);
+      }else{
+        console.log('chua danh gia gi roi!');
+        this.allItems = this.allItemsDemo;
+        this.setPage(1);
+        console.log('this.allItems');
+        console.log(this.allItems);
       }
-      console.log('pui');
-      console.log(pui);
-      console.log('Max 5 correlate');
-      console.log(locateMaxCorrelate);
-      console.log('simArray');
-      console.log(simArray);
-      console.log('movieSimArray');
-      console.log(movieSimArray);
-      console.log('this.allItems');
-      console.log(this.allItems);
     });
   }
   setPage(page: number) {
