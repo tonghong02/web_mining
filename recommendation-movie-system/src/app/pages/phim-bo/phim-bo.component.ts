@@ -69,7 +69,7 @@ export class PhimBoComponent implements OnInit {
   ngOnInit() {
     console.log(this.normalizeTitle("how to do (sesion 3)"));
     // this.listContact();
-    this.testCheckReview();
+    // this.testCheckReview();
   }
 
   listContact() {
@@ -80,7 +80,9 @@ export class PhimBoComponent implements OnInit {
         console.log(data);
         // set items to json response
         this.allItemsDemo = data;
-
+        console.log('dm ver 2');
+        console.log(this.allItemsDemo);
+        this.testCheckReview();
         // initialize to page 1
         
       })
@@ -190,6 +192,8 @@ export class PhimBoComponent implements OnInit {
           sumSim += simArray[locateMaxCorrelate[j]];
         }
         let pui = [];
+        console.log('dm ver 3');
+        console.log(this.allItemsDemo);
         for(let i = 0; i< this.allItemsDemo.length ; i++){
           console.log(this.allItemsDemo[i]._id);
           console.log(meanRate[locateUserLoggedIn]);

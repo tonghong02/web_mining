@@ -17,15 +17,15 @@
                                           <a routerLink="/phim/{{normalizeTitle(movie?.engTitle)}}">
                                               <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
                                           </a>
-                                          <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%;">{{ movie?.title }}</h4>
+                                          <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.title }}</h4>
                                           <p> IMDB: {{ movie?.imdb }} </p>
-                                          <p> YEAR: {{ movie?.year }} </p>
+                                          <p> Năm: {{ movie?.year }} </p>
                                           <p class="content-movie"> {{ movie?.content }} </p>
                                       </div>
                                       <div class="snipcart-details top_brand_home_details">
                                           <form action="#" method="post">
 
-                                              <input type="submit" name="submit" value="VIEW MORE" class="button" />
+                                              <input type="submit" name="submit" value="Xem chi tiết" class="button" />
                                           </form>
                                       </div>
                                   </div>
@@ -42,7 +42,7 @@
   </div>
   <!-- items being paged -->
   <!-- pager -->
-  <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+  <ul *ngIf="pager.pages && pager.pages.length" class="pagination" style="margin-left: 9%;">
       <li [ngClass]="{disabled:pager.currentPage === 1}" style="margin-right: 20px;">
           <a (click)="setPage(1)">First</a>
       </li>

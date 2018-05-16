@@ -21,4 +21,8 @@ export class HistoryService {
   createHistory(body: any){
     return this._apiHeader.post(`/history`, body);
   }
+
+  findUserMovie(idUser: string, titleMovie: string): any{
+    return this._apiRequest.get(`/review/find/${idUser}/${titleMovie}`)
+  }
 }

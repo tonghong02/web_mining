@@ -30,7 +30,7 @@
             <p *ngIf="mesRate" class="alert alert-danger"> {{ mesRate }}</p>
           </div>
           <div class="w3agile_description">
-            <h4 class="text-bold">Description :</h4>
+            <h4 class="text-bold">Mô tả :</h4>
             <div style="text-align:justify;">{{ movie?.content }}</div><br>
             <p ><a [href]="'http://www.' + movie?.linkWatch" target="_blank" (click)="watchMovie()">Xem phim</a></p>
             <!-- <button class="btn" style="background: #fe9126;" (click)="watchMovie()"><a style="color: white;" [href]="'http://www.' + movie?.linkWatch" target="_blank">Xem phim</a></button> -->
@@ -38,13 +38,13 @@
           <div class="snipcart-item block">
             <div class="snipcart-thumb agileinfo_single_right_snipcart">
               <p *ngIf="movie?.imdb"><span class="text-bold">IMDB:</span> {{ movie?.imdb }}</p>
-              <p *ngIf="movie?.rate"><span class="text-bold">RATE:</span> {{ movie?.rate }}</p>
-              <p><span class="text-bold">YEAR:</span> {{ movie?.year }}</p>
-              <p><span class="text-bold">CATEGORY:</span> {{showCategory(movie?.category)}}</p>
-              <p style="text-transform: capitalize;"><span class="text-bold">COUNTRY:</span> {{ movie?.country }}</p>
+              <!-- <p *ngIf="movie?.rate"><span class="text-bold">RATE:</span> {{ movie?.rate }}</p> -->
+              <p><span class="text-bold">Năm:</span> {{ movie?.year }}</p>
+              <p><span class="text-bold">Thể loại:</span> {{showCategory(movie?.category)}}</p>
+              <p style="text-transform: capitalize;"><span class="text-bold">Quốc gia:</span> {{ movie?.country }}</p>
             </div>
             <div *ngIf="isLogin" class="form-group" id="comment">
-              <p><span class="text-bold">REVIEW:</span></p>
+              <p><span class="text-bold">Đánh giá:</span></p>
               <textarea rows="5" style="width: 100%; padding: 2%; border-radius: 2%;" formControlName="content" (focus)="mesContent=''"></textarea>
               <p *ngIf="mesContent" class="alert alert-danger"> {{ mesContent }}</p>
             </div>
@@ -66,7 +66,7 @@
 <br>
 <div class="container">
   <div class="newproducts-w3agile" style="background: none; padding: 3em 0;">
-    <h3>list review for movie</h3>
+    <h3>Danh sách đánh giá</h3>
   </div>
   <div class="list-review" *ngFor="let item of listReviews">
     <h4>{{ item?.user?.username }}</h4>
@@ -84,7 +84,7 @@
 
 <div class="newproducts-w3agile">
   <div class="container">
-      <h3>List {{normalizeCategory(category)}} movies</h3>
+      <h3>Danh sách gợi ý</h3>
       <div class="agile_top_brands_grids">
           <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie?.engTitle)">
               <div class="hover14 column">
@@ -101,13 +101,13 @@
                                           <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
                                       </a>
                                       <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%;">{{ movie?.title }}</h4>
-                                      <p> YEAR: {{ movie?.year }} </p>
+                                      <p> Năm: {{ movie?.year }} </p>
                                       <p class="content-movie"> {{ movie?.content }} </p>
                                   </div>
                                   <div class="snipcart-details top_brand_home_details">
                                       <form action="#" method="post">
 
-                                          <input type="submit" name="submit" value="VIEW MORE" class="button" />
+                                          <input type="submit" name="submit" value="Xem chi tiết" class="button" />
                                       </form>
                                   </div>
                               </div>

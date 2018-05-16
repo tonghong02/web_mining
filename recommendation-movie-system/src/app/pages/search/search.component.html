@@ -1,43 +1,61 @@
-<div class="newproducts-w3agile">
-    <div class="container">
-      <h3>New offers</h3>
-      <div class="agile_top_brands_grids">
-        <div class="col-md-3 top_brand_left-1" *ngFor="let movie of listMovies" (click)="detailMovie(movie._id)">
-          <div class="hover14 column">
-            <div class="agile_top_brand_left_grid">
-              
-              <div class="agile_top_brand_left_grid1">
-                <figure>
-                  <div class="snipcart-item block">
-                    <div class="snipcart-thumb">
-                      <a href="/phim/{{movie._id}}">
-                        <img title=" " alt=" " src="assets/images/14.png">
-                      </a>
-                      <p>{{ movie?.title }}</p>
-                      <div class="stars">
-                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                        <i class="fa fa-star gray-star" aria-hidden="true"></i>
+<div>
+  <div class="newproducts-w3agile">
+      <div class="container">
+          <h3>List {{normalizeCategory(category)}} movies</h3>
+          <div class="agile_top_brands_grids">
+              <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie?.engTitle)">
+                  <div class="hover14 column">
+                      <div class="agile_top_brand_left_grid">
+                          <div class="agile_top_brand_left_grid_pos">
+                              <img src="assets/images/offer.png" alt=" " class="img-responsive">
+                          </div>
+
+                          <div class="agile_top_brand_left_grid1">
+                              <figure>
+                                  <div class="snipcart-item block">
+                                      <div class="snipcart-thumb">
+                                          <a routerLink="/phim/{{normalizeTitle(movie?.engTitle)}}">
+                                              <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
+                                          </a>
+                                          <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.title }}</h4>
+                                          <p> YEAR: {{ movie?.year }} </p>
+                                          <p class="content-movie"> {{ movie?.content }} </p>
+                                      </div>
+                                      <div class="snipcart-details top_brand_home_details">
+                                          <form action="#" method="post">
+
+                                              <input type="submit" name="submit" value="Xem chi tiết" class="button" />
+                                          </form>
+                                      </div>
+                                  </div>
+                              </figure>
+                          </div>
                       </div>
-                      <h4> IMDB: {{ movie?.imdb }}
-                      </h4>
-                      <p> {{ movie?.intro }} </p>
-                    </div>
-                    <div class="snipcart-details top_brand_home_details">
-                      <form action="#" method="post">
-                          <input type="submit" name="submit" value="VIEW MORE" class="button">
-                      </form>
-                    </div>
                   </div>
-                </figure>
+                  <br>
+                  <br>
               </div>
-            </div>
+              <div class="clearfix"> </div>
           </div>
-          <br> <br>
-        </div>
-        <div class="clearfix"> </div>
       </div>
-    </div>
   </div>
+  <!-- items being paged -->
+  <!-- pager -->
+  <ul *ngIf="pager.pages && pager.pages.length" class="pagination" style="margin-left: 9%;">
+      <li [ngClass]="{disabled:pager.currentPage === 1}" style="margin-right: 20px;">
+          <a (click)="setPage(1)">First</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === 1}" style="margin-right: 20px;">
+          <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+      </li>
+      <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" style="margin-right: 20px;">
+          <a (click)="setPage(page)">{{page}}</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" style="margin-right: 20px;">
+          <a (click)="setPage(pager.currentPage + 1)">Next</a>
+      </li>
+      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" style="margin-right: 20px;">
+          <a (click)="setPage(pager.totalPages)">Last</a>
+      </li>
+  </ul>
+</div>

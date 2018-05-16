@@ -1,7 +1,7 @@
 <div>
     <div class="newproducts-w3agile">
         <div class="container">
-            <h3>List {{normalizeCategory(category)}} movies</h3>
+            <h3>Danh sách {{normalizeCategory(category)}}</h3>
             <div class="agile_top_brands_grids">
                 <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie?.engTitle)">
                     <div class="hover14 column">
@@ -17,14 +17,14 @@
                                             <a routerLink="/phim/{{normalizeTitle(movie?.engTitle)}}">
                                                 <img title=" " alt="image" [src]="movie?.linkBackgrounds" />
                                             </a>
-                                            <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%;">{{ movie?.title }}</h4>
-                                            <p> YEAR: {{ movie?.year }} </p>
+                                            <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.title }}</h4>
+                                            <p> Năm: {{ movie?.year }} </p>
                                             <p class="content-movie"> {{ movie?.content }} </p>
                                         </div>
                                         <div class="snipcart-details top_brand_home_details">
                                             <form action="#" method="post">
 
-                                                <input type="submit" name="submit" value="VIEW MORE" class="button" />
+                                                <input type="submit" name="submit" value="Xem chi tiết" class="button" />
                                             </form>
                                         </div>
                                     </div>
@@ -41,7 +41,7 @@
     </div>
     <!-- items being paged -->
     <!-- pager -->
-    <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+    <ul *ngIf="pager.pages && pager.pages.length" class="pagination" style="margin-left: 9%;">
         <li [ngClass]="{disabled:pager.currentPage === 1}" style="margin-right: 20px;">
             <a (click)="setPage(1)">First</a>
         </li>
