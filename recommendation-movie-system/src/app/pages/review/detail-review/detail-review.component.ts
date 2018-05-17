@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from "lodash";
-// import * as _ from 'underscore'; 
 
 import { MovieService } from '../../../services/movie.service';
 import { ReviewService } from '../../../services/review.service';
@@ -11,7 +10,7 @@ import { HistoryService } from '../../../services/history.service';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { MovieModel } from '../../../models/movie.model';
 import { UserModel } from '../../../models/user.model'
-
+import { PaginationService } from '../../../services/pagination.service';
 
 @Component({
   selector: 'app-detail-review',
@@ -30,16 +29,21 @@ export class DetailReviewComponent implements OnInit {
   isErr = false;
   listReviews: any;
   idUser: string = '';
-  pagedItems: any;
+  suggestItems: any;
   view: number = 0;
   rate: any;
+  pagedItems:any;
+  allItems: any;
+  // pager object
+  pager: any = {};
+  pageSize: number = 3;
   src1: string = 'assets/images/star.png';
   src2: string = 'assets/images/star.png';
   src3: string = 'assets/images/star.png';
   src4: string = 'assets/images/star.png';
   src5: string = 'assets/images/star.png';
 
-  constructor(private fb: FormBuilder, private _toastr: ToastrService, private _movie: MovieService, private _route: ActivatedRoute, private _router: Router, private _authentication: AuthenticationService, private _review: ReviewService, private _history: HistoryService) {
+  constructor(private fb: FormBuilder,  private _pagination: PaginationService, private _toastr: ToastrService, private _movie: MovieService, private _route: ActivatedRoute, private _router: Router, private _authentication: AuthenticationService, private _review: ReviewService, private _history: HistoryService) {
     this._route.params.subscribe(params => {
       this.engTitle = this.normalizeTitle(params['engTitle']);
       console.log("name english: " + this.engTitle);
@@ -86,8 +90,10 @@ export class DetailReviewComponent implements OnInit {
             arrRecomend.push(data[listView.indexOf(Math.max.apply(Math, listView))]);
             listView[listView.indexOf(Math.max.apply(Math, listView))] = -1;
           }
-          this.pagedItems = arrRecomend;
+          this.suggestItems = arrRecomend;
         });
+        //
+        this.getListReview();
         // 
       });
 
@@ -115,12 +121,6 @@ export class DetailReviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getListReview();
-
-    this.recomment();
-    // this.reviewForm.controls['idMovie'].setValue(this.movie._id);
-    // console.log(this.normalizeTitle("how_to_do_-sesion_3-"));
-    // console.log(this.showCategory("phim_phieu_luu,phim_tinh_cam,phim_vien_tuong"));
   }
 
   createRange(number) {
@@ -131,13 +131,6 @@ export class DetailReviewComponent implements OnInit {
     return items;
   }
 
-  recomment() {
-    // this._movie.getListMovie(`?year=${this.thisYear}`).subscribe(data => {
-    //   console.log("year");
-    //   console.log(data);
-    //   this.pagedItems = data;
-    // });
-  }
   normalizeCategory(category: string) {
     if (category === 'phim_co_trang') return 'Phim Cổ Trang';
     else if (category === 'phim_hai') return 'Phim Hài';
@@ -270,12 +263,25 @@ export class DetailReviewComponent implements OnInit {
   getListReview() {
     this._review.listReview(`?movie=${this.engTitle}`).subscribe(data => {
       this.listReviews = data;
+      this.allItems = data;
       console.log("list reviews!!!!")
       console.log(this.listReviews);
-
+      this.setPage(1);
     }, err => {
       console.log(err)
     })
+  }
+
+  setPage(page: number) {
+    if (page < 1 || page > this.pager.totalPages) {
+      return;
+    }
+
+    // get pager object from service
+    this.pager = this._pagination.getPager(this.allItems.length, page, this.pageSize);
+
+    // get current page of items
+    this.pagedItems = this.allItems.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
 
   normalizeTitle(title: string) {

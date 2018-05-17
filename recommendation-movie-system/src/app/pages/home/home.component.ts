@@ -33,9 +33,6 @@ export class HomeComponent implements OnInit {
       console.log(this.listMovies);
     })
   }
-<<<<<<< HEAD
-  
-=======
 
   getListTopView() {
     this._movie.topView().subscribe(data => {
@@ -53,7 +50,6 @@ export class HomeComponent implements OnInit {
     })
   }
 
->>>>>>> 5d0fb6857484e1b409a64007ecbd646a05279d94
   detailMovie(title: string) {
     let engTitle = this.normalizeTitle(title);
     this._router.navigateByUrl(`/phim/${engTitle}`);

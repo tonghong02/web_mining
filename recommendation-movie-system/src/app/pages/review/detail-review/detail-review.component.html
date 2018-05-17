@@ -78,9 +78,9 @@
   <div class="newproducts-w3agile" style="background: none; padding: 3em 0;">
     <h3>Danh sách đánh giá</h3>
   </div>
-  <div class="list-review" *ngFor="let item of listReviews">
+  <div class="list-review" *ngFor="let item of pagedItems">
     <h4>{{ item?.user?.username }}</h4>
-    <p>{{ item?.user?.email }}</p>
+    <!-- <p>{{ item?.user?.email }}</p> -->
     <div>
       <span class="rate-group" *ngFor="let star of createRange(item?.rate);">
         <img src="assets/images/star1.png">
@@ -89,6 +89,26 @@
     <p>{{ item?.content }}</p>
     <hr>
   </div>
+  <!-- pager -->
+
+  <ul *ngIf="pager.pages && pager.pages.length" class="pagination" style="margin-left: 9%;">
+    <li [ngClass]="{disabled:pager.currentPage === 1}" style="margin-right: 20px;">
+        <a (click)="setPage(1)">First</a>
+    </li>
+    <li [ngClass]="{disabled:pager.currentPage === 1}" style="margin-right: 20px;">
+        <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+    </li>
+    <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" style="margin-right: 20px;">
+        <a (click)="setPage(page)">{{page}}</a>
+    </li>
+    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" style="margin-right: 20px;">
+        <a (click)="setPage(pager.currentPage + 1)">Next</a>
+    </li>
+    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" style="margin-right: 20px;">
+        <a (click)="setPage(pager.totalPages)">Last</a>
+    </li>
+</ul>
+  <!-- end pager -->
 </div>
 
 <!-- // list review -->
@@ -97,7 +117,7 @@
   <div class="container">
     <h3>Danh sách gợi ý</h3>
     <div class="agile_top_brands_grids">
-      <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie?.engTitle)">
+      <div class="col-md-4 top_brand_left" *ngFor="let movie of suggestItems" (click)="detailMovie(movie?.engTitle)">
         <div class="hover14 column">
           <div class="agile_top_brand_left_grid">
             <div class="agile_top_brand_left_grid_pos">
