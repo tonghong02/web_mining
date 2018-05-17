@@ -107,6 +107,7 @@ export class PhimBoComponent implements OnInit {
       let userArray = data.idUser;
       let movieArray = data.idMovie;
       // tinh toan gia tri rating trung binh cho tung user
+      
       for(let i = 0; i < rateArray.length;i++){
         let sum = 0;
         for(let j = 0; j<rateArray[i].length;j++){
@@ -167,9 +168,19 @@ export class PhimBoComponent implements OnInit {
               numerator += (rateArrDuplicate[k][0] - meanRate[i])*(rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
               denominator1 += (rateArrDuplicate[k][0] - meanRate[i])*(rateArrDuplicate[k][0] - meanRate[i]);
               denominator2 += (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]) * (rateArrDuplicate[k][1] - meanRate[locateUserLoggedIn]);
+              console.log('denominator 1 = '+ denominator1);
+              console.log('denominator 2 = '+ denominator2);
             }
-            let sim = numerator/(Math.sqrt(denominator1)*Math.sqrt(denominator2));
+            let sim;
+            if(isNaN(sim)==true){
+              sim = 0;
+            }
+            else{
+              sim = numerator/(Math.sqrt(denominator1)*Math.sqrt(denominator2));
+            }  
             simArray.push(sim);
+            console.log('simArray');
+            console.log(simArray);
             userSimArray.push(userArray[i]);
             rateSimArray.push(rateArray[i]);
             movieSimArray.push(movieArray[i]);
@@ -213,6 +224,11 @@ export class PhimBoComponent implements OnInit {
         console.log('pui');
         console.log(pui.length);
         console.log(pui);
+        for(let i = 0; i<pui.length;i++){
+          if(isNaN(pui[i])==true){
+            pui[i]=0;
+          }
+        }
         let arraySort = [];
         for(let i = 0; i<pui.length;i++){
           for(let j = 0;j<pui.length;j++){
