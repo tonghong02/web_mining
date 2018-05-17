@@ -1,13 +1,13 @@
 <div>
     <div class="newproducts-w3agile">
         <div class="container">
-            <h3>List reviewed movies</h3>
+            <h3>Danh sách các phim đã đánh giá</h3>
             <div class="agile_top_brands_grids">
                 <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie?.movie)">
                     <div class="hover14 column">
                         <div class="agile_top_brand_left_grid">
                             <div class="agile_top_brand_left_grid_pos">
-                                <img src="assets/images/offer.png" alt=" " class="img-responsive">
+                                <!-- <img src="assets/images/offer.png" alt=" " class="img-responsive"> -->
                             </div>
 
                             <div class="agile_top_brand_left_grid1">
@@ -18,12 +18,13 @@
                                                 <img title=" " alt="image" [src]="movie?.idMovie?.linkBackgrounds" />
                                             </a>
                                             <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.idMovie?.title }}</h4>
-                                            <p> YEAR: {{ movie?.idMovie?.year }} </p>
+                                            <p> Năm: {{ movie?.idMovie?.year }} </p>
+                                            <p> Quốc gia: {{ movie?.idMovie?.country }} </p>
                                             <p class="content-movie"> {{ movie?.idMovie?.content }} </p>
                                         </div>
                                         <div class="snipcart-details top_brand_home_details">
                                             <form action="#" method="post">
-                                                <input type="submit" name="submit" value="VIEW MORE" class="button" />
+                                                <input type="submit" name="submit" value="Xem chi tiết" class="button" />
                                             </form>
                                         </div>
                                     </div>

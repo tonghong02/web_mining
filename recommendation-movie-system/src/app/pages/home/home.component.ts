@@ -11,27 +11,49 @@ import { MovieService } from '../../services/movie.service'
 export class HomeComponent implements OnInit {
 
   listMovies: any;
+  listTopViews: any;
+  listTopRates: any;
 
   constructor(private _movie: MovieService, private _router: Router) { }
 
   ngOnInit() {
     this.getListMovie();
-    console.log(this.normalizeTitle("the flash (season 4)"));
-    console.log(this.normalizeTitlee(this.normalizeTitle("the flash (season 4)")))
-
+    this.getListTopView();
+    this.getListTopRate();
   }
 
   normalizeTitlee(title: string) {
     let arr = title.split("_");
     return arr.join(' ');
   }
+
   getListMovie() {
     this._movie.getListMovie(``).subscribe(data => {
       this.listMovies = data;
       console.log(this.listMovies);
     })
   }
+<<<<<<< HEAD
   
+=======
+
+  getListTopView() {
+    this._movie.topView().subscribe(data => {
+      this.listTopViews = data;
+      console.log("list top view")
+      console.log(this.listTopViews);
+    })
+  }
+
+  getListTopRate() {
+    this._movie.topRate().subscribe(data => {
+      this.listTopRates = data;
+      console.log("list top rate")
+      console.log(this.listTopRates);
+    })
+  }
+
+>>>>>>> 5d0fb6857484e1b409a64007ecbd646a05279d94
   detailMovie(title: string) {
     let engTitle = this.normalizeTitle(title);
     this._router.navigateByUrl(`/phim/${engTitle}`);
@@ -55,3 +77,6 @@ export class HomeComponent implements OnInit {
     return url.replace('(', '-').replace(')', '-');
   }
 }
+
+
+

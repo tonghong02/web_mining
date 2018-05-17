@@ -1,13 +1,13 @@
 <div>
     <div class="newproducts-w3agile">
         <div class="container">
-            <h3>List history watched movies</h3>
+            <h3>Danh sách các phim đã xem</h3>
             <div class="agile_top_brands_grids">
                 <div class="col-md-4 top_brand_left" *ngFor="let movie of pagedItems" (click)="detailMovie(movie?.movie.engTitle)">
                     <div class="hover14 column">
                         <div class="agile_top_brand_left_grid">
                             <div class="agile_top_brand_left_grid_pos">
-                                <img src="assets/images/offer.png" alt=" " class="img-responsive">
+                                <!-- <img src="assets/images/offer.png" alt=" " class="img-responsive"> -->
                             </div>
 
                             <div class="agile_top_brand_left_grid1">
@@ -18,7 +18,8 @@
                                                 <img title=" " alt="image" [src]="movie?.movie?.linkBackgrounds" />
                                             </a>
                                             <h4 style="text-transform: uppercase; text-align: center;padding-top: 5%; color: orange;">{{ movie?.movie?.title }}</h4>
-                                            <p> YEAR: {{ movie?.movie?.year }} </p>
+                                            <p> Năm: {{ movie?.movie?.year }} </p>
+                                            <p> Quốc gia: {{ movie?.movie?.country }} </p>
                                             <p class="content-movie"> {{ movie?.movie?.content }} </p>
                                         </div>
                                         <div class="snipcart-details top_brand_home_details">
