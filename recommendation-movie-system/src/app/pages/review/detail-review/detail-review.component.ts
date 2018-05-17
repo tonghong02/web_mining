@@ -88,6 +88,9 @@ export class DetailReviewComponent implements OnInit {
           }
           this.pagedItems = arrRecomend;
         });
+
+        //
+        this.getListReview();        
         // 
       });
 
@@ -115,7 +118,7 @@ export class DetailReviewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getListReview();
+    // this.getListReview();
 
     this.recomment();
     // this.reviewForm.controls['idMovie'].setValue(this.movie._id);
